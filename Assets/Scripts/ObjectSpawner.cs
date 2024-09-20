@@ -8,7 +8,8 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] GameObject playerPrefab;
     [SerializeField] Vector2 playerVector;
     
-    [SerializeField] GameObject obstaclePrefab;
+    [Tooltip("Place in order of difficuly. obstacles are spawned based on score, the higher the score/10 the higher the index.")]
+    [SerializeField] List<GameObject> obstaclePrefabs;
     [SerializeField] float obstacleInterval;
     [SerializeField] float ObstacleHeightVariation;
     
@@ -42,10 +43,15 @@ public class ObjectSpawner : MonoBehaviour
 
     void SpawnObstacle()
     {
+        //Gets random obstacle.
+        GameObject randomObstacle = obstaclePrefabs[Random.Range(0, GameController.instance.CurrentScore/10+1)];
+        
+        //Gets random height, within screen bounds.
         var heightRange = _screen.y-ObstacleHeightVariation;
         var height = Random.Range(-heightRange, heightRange);
+        
         //Instantiates the obstacle out of view (Moving and despawning is handles by the object itself).
-        Instantiate(obstaclePrefab, new Vector2(_screen.x+1, height), Quaternion.identity);
+        Instantiate(randomObstacle, new Vector2(_screen.x+1, 0), Quaternion.identity);
     }
 
     void SpawnCloud()

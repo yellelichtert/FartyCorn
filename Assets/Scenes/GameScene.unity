@@ -470,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a2bdfbe6f66140fca61f672cb6102f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentGameState: 0
+  obstacleSpeed: 2
   background: {fileID: 1423180984}
 --- !u!114 &1714304302
 MonoBehaviour:
@@ -486,7 +486,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 7273248192616886108, guid: 72817a79ff40b4443823b8d668d5e0e1, type: 3}
   playerVector: {x: -1, y: 0}
-  obstaclePrefab: {fileID: 8127059860741285607, guid: 7f69dc5812f2f4ee8ad4cac5016ddd27, type: 3}
+  obstaclePrefabs:
+  - {fileID: 3078713890791239737, guid: e29077be2215d457ea01a7301a8b3e1b, type: 3}
+  - {fileID: 8127059860741285607, guid: 7f69dc5812f2f4ee8ad4cac5016ddd27, type: 3}
   obstacleInterval: 4
   ObstacleHeightVariation: 1
   cloudPrefab: {fileID: 8935153669835651861, guid: 701b79b3db7174dfb94f2171a16cbd95, type: 3}

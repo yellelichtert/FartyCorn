@@ -6,13 +6,13 @@ public class ObjectController : MonoBehaviour
     private float destroyLocation; 
     
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         //Sets x position where object is destroyed (out of view).
         destroyLocation = -transform.position.x-1;
     }
     
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         //Moves object at constant rate.
         transform.Translate(Vector2.left * moveSpeed *Time.deltaTime);

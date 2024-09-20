@@ -12,8 +12,9 @@ public class GameController : MonoBehaviour
     private int _highScore = 0;
     private int _currentScore;
     
-    public GameState _currentGameState;
-    
+    private GameState _currentGameState;
+
+    [SerializeField] float obstacleSpeed;
     [SerializeField] GameObject background;
     
     public enum GameState
@@ -87,4 +88,8 @@ public class GameController : MonoBehaviour
         }
     }
     
+    public float ObstacleSpeed
+    {
+        get => obstacleSpeed;
+    }
 }
