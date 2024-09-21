@@ -20,7 +20,7 @@ public class CollectableScript : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _isCollected = true;
-            GameController.instance.CurrentScore += 1;
+            GameController.Instance.CurrentScore += 1;
             
             _collectSound.Play();
             

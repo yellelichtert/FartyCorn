@@ -5,30 +5,21 @@ using UnityEngine.SocialPlatforms;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
-public class Obstacle_01 : BaseObstacleController
+public class Obstacle_01 : ObstacleBase
 {
     
-    [SerializeField] float heightVariation;
     
-    public override void Start()
+    //switches between up and down 1 in 2 chance.
+    public override float GetRandomHeight()
     {
-        
-
+        //Set random height.
         if (Random.Range(1,30) % 2 == 1)
         {
-            transform.position = new Vector3(transform.position.x, heightVariation, transform.position.z);            
+            return heightVariation;       
         }
         else
         {
-            transform.position = new Vector3(transform.position.x, -heightVariation, transform.position.z);
+            return -heightVariation;
         }
-        
-        base.Start();
-    }
-
-
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
     }
 }

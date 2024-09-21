@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7163859335722398760}
-  - component: {fileID: 1448011099431583090}
+  - component: {fileID: 6140589288293814444}
   m_Layer: 0
   m_Name: Obstacle_02
   m_TagString: GamePlayObject
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 9107669676654929147}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1448011099431583090
+--- !u!114 &6140589288293814444
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,10 +44,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8127059860741285607}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4b33e2bb9c014c63b4c6941968cddca, type: 3}
+  m_Script: {fileID: 11500000, guid: dcbed7f4cc353431dad271835aec6912, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  difficulty: 0
+  heightVariation: 5
 --- !u!1001 &488304604035581560
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -274,9 +275,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4472f3382da0f4443825af39ee8e3909, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collectSound: {fileID: 9101177346974515715}
---- !u!82 &9101177346974515715 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 4779854627004604723, guid: f2344a5f64aab49b0b098ec35d4f11ca, type: 3}
-  m_PrefabInstance: {fileID: 4330374760847532848}
-  m_PrefabAsset: {fileID: 0}

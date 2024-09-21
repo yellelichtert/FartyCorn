@@ -6,8 +6,8 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     //Singleton class.
-    public static GameController instance;
-    private void Awake() => instance = this;
+    public static GameController Instance;
+    private void Awake() => Instance = this;
 
     private int _highScore = 0;
     private int _currentScore;

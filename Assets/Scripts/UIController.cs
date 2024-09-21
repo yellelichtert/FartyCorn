@@ -89,7 +89,7 @@ public class UIController : MonoBehaviour
 
     private void PlayButtonOnclicked()
     {
-        GameController.instance.CurrentGameState = GameController.GameState.Playing;
+        GameController.Instance.CurrentGameState = GameController.GameState.Playing;
     }
 
     

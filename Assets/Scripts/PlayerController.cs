@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         Destroy(gameObject);
-        GameController.instance.CurrentGameState = GameController.GameState.GameOver;
+        GameController.Instance.CurrentGameState = GameController.GameState.GameOver;
     }
 
     private IEnumerator Thrust()
