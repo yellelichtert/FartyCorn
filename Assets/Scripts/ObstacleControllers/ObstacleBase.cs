@@ -17,15 +17,16 @@ public class ObstacleBase : MonoBehaviour
         _moveSpeed = ObstacleManager.Instance.moveSpeed;
         _startLocation = transform.position.x;
         
+        //move to random height.
         transform.position = new Vector2(_startLocation, GetRandomHeight());
     }
-
-    // Update is called once per frame
+    
     public virtual void FixedUpdate()
     {
         //Moves obstacle.
         transform.Translate(Vector3.left * (_moveSpeed * Time.deltaTime));
 
+        //Destroys obstacle when out of screen.
         if (transform.position.x < -_startLocation)
         {
             Destroy(gameObject);
@@ -37,7 +38,8 @@ public class ObstacleBase : MonoBehaviour
         return transform.position.y + Random.Range(-heightVariation, heightVariation);
     }
 
-private void OnDestroy()
+    //Triggers event in obstacle manager.
+    private void OnDestroy()
     {
         DestroyEvent?.Invoke();
     }

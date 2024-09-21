@@ -436,6 +436,7 @@ GameObject:
   - component: {fileID: 1714304298}
   - component: {fileID: 1714304301}
   - component: {fileID: 1714304302}
+  - component: {fileID: 1714304303}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -486,11 +487,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 7273248192616886108, guid: 72817a79ff40b4443823b8d668d5e0e1, type: 3}
   playerVector: {x: -1, y: 0}
-  obstaclePrefabs:
-  - {fileID: 3078713890791239737, guid: e29077be2215d457ea01a7301a8b3e1b, type: 3}
-  - {fileID: 8127059860741285607, guid: 7f69dc5812f2f4ee8ad4cac5016ddd27, type: 3}
-  obstacleInterval: 4
-  ObstacleHeightVariation: 1
   cloudPrefab: {fileID: 8935153669835651861, guid: 701b79b3db7174dfb94f2171a16cbd95, type: 3}
   cloudSprites:
   - {fileID: 21300000, guid: eded9789002ef461392059f00cf64fe8, type: 3}
@@ -498,6 +494,22 @@ MonoBehaviour:
   - {fileID: 21300000, guid: feeed9cfd0e254dca84a2ace57a8f569, type: 3}
   minCloudInterval: 1
   maxCloudInterval: 3
+--- !u!114 &1714304303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714304296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 496f51230afa342d9bb1003b19a38b66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
+  obstacles:
+  - {fileID: 3987342894684454147, guid: e29077be2215d457ea01a7301a8b3e1b, type: 3}
+  - {fileID: 6140589288293814444, guid: 7f69dc5812f2f4ee8ad4cac5016ddd27, type: 3}
 --- !u!1 &2120262415
 GameObject:
   m_ObjectHideFlags: 0

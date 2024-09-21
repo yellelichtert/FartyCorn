@@ -16,7 +16,7 @@ public class ObstacleManager : MonoBehaviour
     [SerializeField] private List<ObstacleBase> obstacles;
     
     private List<ObstacleBase> _availableObstacles;
-    private int _currentDifficulty;
+    private int _currentDifficulty = 0;
     private float _spawnLocation;
     
     // Start is called before the first frame update
@@ -25,14 +25,27 @@ public class ObstacleManager : MonoBehaviour
         //Sets spawn location to right edge of the screen.
         _spawnLocation = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x+1;
         
-        //GameController.ScoreChanged += GameControllerOnScoreChanged;
+        //Sets initial obstacles
+        _availableObstacles = _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
+        
+        GameController.ScoreChanged += GameControllerOnScoreChanged;
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
+    }
+    
+    /// <summary>
+    /// Adds obstacles with greater difficulty
+    /// </summary>
+    private void GameControllerOnScoreChanged(int newScore)
+    {
+        int difficultyValue = newScore / 10;
+        if (difficultyValue != _currentDifficulty)
+            _availableObstacles = obstacles.Where(o => o.difficulty <= difficultyValue).ToList();
+        
     }
 
     /// <summary>
     /// Starts spawning obstacles when game state changes to Playing.
     /// </summary>
-    /// <param name="newState"></param>
     private void GameControllerOnGameStateChanged(GameController.GameState newState)
     {
         if (newState == GameController.GameState.Playing)
@@ -48,10 +61,7 @@ public class ObstacleManager : MonoBehaviour
         if (GameController.Instance.CurrentGameState != GameController.GameState.Playing)
             return;
         
-        var obstacle = Instantiate(obstacles[Random.Range(0, obstacles.Count)], new Vector2(_spawnLocation, 0), Quaternion.identity);
+        var obstacle = Instantiate(_availableObstacles[Random.Range(0, _availableObstacles.Count)], new Vector2(_spawnLocation, 0), Quaternion.identity);
         obstacle.DestroyEvent += SpawnObstacle;
     }
-    
-    
-    
 }
