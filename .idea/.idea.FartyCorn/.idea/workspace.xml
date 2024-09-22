@@ -7,9 +7,6 @@
     <list default="true" id="b06ad613-fac1-4d83-b47e-ca203c393b69" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FartyCorn/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FartyCorn/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Clouds.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Clouds.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Obstacles/Obstacle_02.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Obstacles/Obstacle_02.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/GameScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ObstacleControllers/ObstacleBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ObstacleControllers/ObstacleBase.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/ObstacleManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ObstacleManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,18 +26,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2022.3.45f1/Unity.app/Contents/MacOS/Unity" />
@@ -88,7 +85,8 @@
       <option name="presentableId" value="Default" />
       <updated>1726832977097</updated>
       <workItem from="1726832978666" duration="4156000" />
-      <workItem from="1726837567958" duration="22030000" />
+      <workItem from="1726837567958" duration="22753000" />
+      <workItem from="1726999257630" duration="349000" />
     </task>
     <servers />
   </component>

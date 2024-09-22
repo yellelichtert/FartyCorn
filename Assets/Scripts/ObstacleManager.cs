@@ -39,8 +39,11 @@ public class ObstacleManager : MonoBehaviour
     {
         int difficultyValue = newScore / 10;
         if (difficultyValue != _currentDifficulty)
-            _availableObstacles = obstacles.Where(o => o.difficulty <= difficultyValue).ToList();
-        
+        {
+            _currentDifficulty = difficultyValue;
+            SetAvailableObstacles();
+        }
+                    
     }
 
     /// <summary>
@@ -49,9 +52,18 @@ public class ObstacleManager : MonoBehaviour
     private void GameControllerOnGameStateChanged(GameController.GameState newState)
     {
         if (newState == GameController.GameState.Playing)
+        {
+            _currentDifficulty = 0; 
+            SetAvailableObstacles();
             SpawnObstacle();
+        }
     }
     
+    //
+    private void SetAvailableObstacles()
+    {
+           _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
+    }
 
     /// <summary>
     /// Instantiates a random obstacle from the available obstacles
