@@ -38,7 +38,7 @@ The creative assets used in **Farty Corn** (including but not limited to artwork
 1. **No Distribution:** You may not copy, distribute, or transmit any creative assets from this project.
 2. **No Modification:** You may not modify, transform, or build upon the creative assets.
 3. **No Commercial Use:** The assets may not be used for any commercial purpose without explicit written permission.
-4. **Personal Use Only:** These assets may only be used for personal, non-commercial purposes unless otherwise permitted in writing.
+4. **Personal Use Only:** These assets may only be used for personal, non-commercial purposes unless otherwise permitted in writing. Any projects using these assets may not be distributed without explicit written consent. 
 5. **No Derivative Works:** You may not create derivative works from the creative assets without explicit written consent.
 
 #### Sound Effects Disclaimer
@@ -51,7 +51,7 @@ For any other inquiries about licensing or asset usage, please contact lichtert.
 © 2024 Lichtert Yelle. All rights reserved.
 
 ## 👋 Contact
-For more updates, follow the project on GitHub or reach out via [your contact info].
+For more updates, follow the project on GitHub or reach out via lichtert.yelle1@outlook.com
 
 ---
 Stay tuned for more updates as **Farty Corn** evolves into the craziest unicorn-powered game you've ever played!
