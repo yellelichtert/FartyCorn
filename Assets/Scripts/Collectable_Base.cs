@@ -17,15 +17,9 @@ public class Collectable_Base : MonoBehaviour
 
     public virtual void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-        {
-            _isCollected = true;
-            
-            _collectSound.Play();
-            
-            _spriteRenderer.enabled = false;
-        }
+        _isCollected = true;
+        _collectSound.Play();
+        _spriteRenderer.enabled = false;
+       
     }
-
-
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,12 +12,17 @@ public class ObstacleBase : MonoBehaviour
     
     private float _moveSpeed;
     private float _startLocation;
+    private Vector2 _movementDirection;
     public event Action DestroyEvent;
+    
     
     public void Start()
     {
         _moveSpeed = ObstacleManager.Instance.moveSpeed;
         _startLocation = transform.position.x;
+        
+        _movementDirection = GameController.Instance.CurrentDirection == GameController.Direction.Left 
+            ? Vector2.right : Vector2.left;
         
         //move to random height.
         transform.position = new Vector2(_startLocation, GetRandomHeight());
@@ -31,15 +37,17 @@ public class ObstacleBase : MonoBehaviour
             var collectableObject = Instantiate(randomCollectable, collectable.transform, true);
             collectableObject.transform.position = collectable.transform.position;
         }
+        
+        GameController.DirectionChanged += GameControllerOnDirectionChanged;
     }
     
     public virtual void FixedUpdate()
     {
         //Moves obstacle.
-        transform.Translate(Vector3.left * (_moveSpeed * Time.deltaTime));
+        transform.Translate(_movementDirection * (_moveSpeed * Time.deltaTime));
 
         //Destroys obstacle when out of screen.
-        if (transform.position.x < -_startLocation)
+        if ((_startLocation > 0 && transform.position.x < -_startLocation) || (_startLocation < 0 && transform.position.x > math.abs(_startLocation)) )
         {
             Destroy(gameObject);
         }
@@ -63,4 +71,19 @@ public class ObstacleBase : MonoBehaviour
             GameController.Instance.CurrentScore += 1;
         }
     }
+    
+    private void GameControllerOnDirectionChanged(GameController.Direction newDirection)
+    {
+        if (newDirection == GameController.Direction.Left)
+        {
+            _movementDirection = Vector2.right;
+            _startLocation = -_startLocation;
+        }
+        else
+        {
+            _movementDirection = Vector2.left;
+            _startLocation = math.abs(_startLocation);
+        }
+    }
+    
 }

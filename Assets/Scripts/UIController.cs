@@ -5,7 +5,7 @@ public class UIController : MonoBehaviour
 {
     //Singleton
     public static UIController Instance;
-    
+
     private UIDocument _uiDoc;
     private Label _currentScoreLabel;
 

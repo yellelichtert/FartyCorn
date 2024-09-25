@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -21,7 +22,7 @@ public class ObstacleManager : MonoBehaviour
     private List<ObstacleBase> _availableObstacles;
     private int _currentDifficulty = 0;
     private float _spawnLocation;
-    
+    private bool _directionChanged;
     void Start()
     {
         //Sets spawn location to right edge of the screen.
@@ -32,8 +33,9 @@ public class ObstacleManager : MonoBehaviour
         
         GameController.ScoreChanged += GameControllerOnScoreChanged;
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
+        GameController.DirectionChanged += GameControllerOnDirectionChanged;
     }
-    
+
     /// <summary>
     /// Adds obstacles with greater difficulty.
     /// </summary>
@@ -94,5 +96,12 @@ public class ObstacleManager : MonoBehaviour
         if (randomValue <= specialCollectablePropability)
             return specialCollectables[Random.Range(0, specialCollectables.Count)];
         return defaultCollectable;
+    }
+    
+    //Changes the spawn location when the direction changes.
+    private void GameControllerOnDirectionChanged(GameController.Direction newDirection)
+    {
+        _spawnLocation = newDirection == GameController.Direction.Right 
+            ? math.abs(_spawnLocation) : -_spawnLocation;
     }
 }

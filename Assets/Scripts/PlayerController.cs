@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -14,6 +16,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        
+        GameController.DirectionChanged += GameControllerOnDirectionChanged;
     }
     
     public void Flap()
@@ -38,5 +42,22 @@ public class PlayerController : MonoBehaviour
         
         yield return new WaitForSeconds(animationLength);
         Destroy(thrust.gameObject);
+    }
+    
+    private void GameControllerOnDirectionChanged(GameController.Direction newDirection)
+    {
+        if (newDirection == GameController.Direction.Left)
+        {
+            transform.position = new Vector2(math.abs(transform.position.x), transform.position.y);
+        }
+        else
+        {
+            transform.position = new Vector2(-transform.position.x, transform.position.y);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        GameController.DirectionChanged -= GameControllerOnDirectionChanged;
     }
 }

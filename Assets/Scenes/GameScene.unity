@@ -471,7 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a2bdfbe6f66140fca61f672cb6102f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleSpeed: 2
+  obstacleSpeed: 0
   background: {fileID: 1423180984}
 --- !u!114 &1714304302
 MonoBehaviour:
@@ -510,6 +510,10 @@ MonoBehaviour:
   obstacles:
   - {fileID: 3987342894684454147, guid: e29077be2215d457ea01a7301a8b3e1b, type: 3}
   - {fileID: 6140589288293814444, guid: 7f69dc5812f2f4ee8ad4cac5016ddd27, type: 3}
+  defaultCollectable: {fileID: 2160127286497970619, guid: f2344a5f64aab49b0b098ec35d4f11ca, type: 3}
+  specialCollectables:
+  - {fileID: 1359371643045781666, guid: 18c73c09dde0a41ba8c7bb0dfb15c1e4, type: 3}
+  specialCollectablePropability: 10
 --- !u!1 &2120262415
 GameObject:
   m_ObjectHideFlags: 0

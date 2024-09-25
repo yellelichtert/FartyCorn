@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     private int _currentScore;
     
     private GameState _currentGameState;
+    private Direction _currentDirection;
 
     [SerializeField] float obstacleSpeed;
     [SerializeField] GameObject background;
@@ -23,10 +24,16 @@ public class GameController : MonoBehaviour
         Playing,
         GameOver
     }
+    public enum Direction
+    {
+        Left,
+        Right
+    }
 
     public static event Action<GameState> GameStateChanged;
     public static event Action<int> ScoreChanged;
     public static event Action<int> HighScoreChanged;
+    public static event Action<Direction> DirectionChanged;
 
     private void Start()
     {
@@ -75,6 +82,7 @@ public class GameController : MonoBehaviour
             if (_currentGameState == GameState.Playing)
             {
                 CurrentScore = 0;
+                CurrentDirection = Direction.Right;
             }
             
             else if (_currentGameState == GameState.GameOver)
@@ -91,5 +99,15 @@ public class GameController : MonoBehaviour
     public float ObstacleSpeed
     {
         get => obstacleSpeed;
+    }
+
+    public Direction CurrentDirection
+    {
+        get => _currentDirection;
+        set
+        {
+            _currentDirection = value;
+            DirectionChanged?.Invoke(value);
+        }
     }
 }
