@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    //Singleton class.
     public static GameController Instance;
     private void Awake() => Instance = this;
-
+    
+    
+    [SerializeField] float obstacleSpeed;
+    [SerializeField] GameObject background;
+    
     private int _highScore = 0;
     private int _currentScore;
     
     private GameState _currentGameState;
     private Direction _currentDirection;
-
-    [SerializeField] float obstacleSpeed;
-    [SerializeField] GameObject background;
     
     public enum GameState
     {

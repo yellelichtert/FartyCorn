@@ -1,17 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
+
+/// <summary>
+/// This class is currently used to spawn all objects except obstacles.
+/// I might change this in the future depending on the need.
+/// currently this works, so I do need feel/see the need to put into seperate classes.
+/// </summary>
+
 
 public class ObjectSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject playerPrefab;
-    [SerializeField] Vector2 playerVector;
-    
-    [SerializeField] GameObject cloudPrefab;
-    [SerializeField] List<Sprite> cloudSprites = new List<Sprite>();
-    [SerializeField] float minCloudInterval;
-    [SerializeField] float maxCloudInterval;
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private Vector2 playerVector;
+    [SerializeField] private GameObject cloudPrefab;
+    [SerializeField] private List<Sprite> cloudSprites = new List<Sprite>();
+    [SerializeField] private float minCloudInterval;
+    [SerializeField] private float maxCloudInterval;
     
     private Vector2 _screen;
     void Start()

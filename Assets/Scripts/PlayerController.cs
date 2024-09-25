@@ -12,23 +12,19 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;
     private AudioSource _audio;
     
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        
         GameController.DirectionChanged += GameControllerOnDirectionChanged;
     }
     
     public void Flap()
     {
-        Debug.unityLogger.Log("Bird Flapped");
-        //Adds upward force to player
         _rb.AddForce(Vector2.up * flapForce, ForceMode2D.Impulse);
         StartCoroutine(Thrust());
     }
     
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         Destroy(gameObject);
         GameController.Instance.CurrentGameState = GameController.GameState.GameOver;
@@ -46,14 +42,7 @@ public class PlayerController : MonoBehaviour
     
     private void GameControllerOnDirectionChanged(GameController.Direction newDirection)
     {
-        if (newDirection == GameController.Direction.Left)
-        {
-            transform.position = new Vector2(math.abs(transform.position.x), transform.position.y);
-        }
-        else
-        {
-            transform.position = new Vector2(-transform.position.x, transform.position.y);
-        }
+        transform.position = newDirection == GameController.Direction.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
     }
 
     private void OnDestroy()

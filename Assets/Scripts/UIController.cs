@@ -1,9 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
 {
-    //Singleton
     public static UIController Instance;
 
     private UIDocument _uiDoc;
@@ -19,10 +19,8 @@ public class UIController : MonoBehaviour
     
     void Awake()
     {
-        //Set singleton.
         Instance = this;
         
-        //Get elements.
         _uiDoc = GetComponent<UIDocument>();
         
         _currentScoreLabel = _uiDoc.rootVisualElement.Q<Label>("currentScore");
@@ -32,9 +30,8 @@ public class UIController : MonoBehaviour
         _menuScoreLabel = _menu.Q<Label>("menuCurrentScore");
         _highScoreLabel = _uiDoc.rootVisualElement.Q<Label>("highScore");
         _playButton = _uiDoc.rootVisualElement.Q<Button>("playButton");
-
-        //Set events
-        _playButton.clicked += PlayButtonOnclicked;
+        
+        _playButton.clicked += PlayButtonOnClicked;
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         GameController.ScoreChanged += GameControllerOnScoreChanged;
         GameController.HighScoreChanged += GameControllerOnHighScoreChanged;
@@ -86,9 +83,8 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void PlayButtonOnclicked()
+    private void PlayButtonOnClicked()
     {
-        
         GameController.Instance.CurrentGameState = GameController.GameState.Playing;
     }
 

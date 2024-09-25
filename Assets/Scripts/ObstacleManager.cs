@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Obstacles;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,7 +10,6 @@ using Random = UnityEngine.Random;
 
 public class ObstacleManager : MonoBehaviour
 {
-    //Singleton class.
     public static ObstacleManager Instance;
     private void Awake() => Instance = this;
 
@@ -23,82 +23,56 @@ public class ObstacleManager : MonoBehaviour
     private int _currentDifficulty = 0;
     private float _spawnLocation;
     private bool _directionChanged;
-    void Start()
+    
+    private void Start()
     {
-        //Sets spawn location to right edge of the screen.
         _spawnLocation = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x+1;
         
-        //Sets initial obstacles.
         _availableObstacles = _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
         
         GameController.ScoreChanged += GameControllerOnScoreChanged;
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         GameController.DirectionChanged += GameControllerOnDirectionChanged;
     }
-
-    /// <summary>
-    /// Adds obstacles with greater difficulty.
-    /// </summary>
+    
     private void GameControllerOnScoreChanged(int newScore)
     {
-        int difficultyValue = newScore / 10;
-        if (difficultyValue != _currentDifficulty)
-        {
-            _currentDifficulty = difficultyValue;
-            SetAvailableObstacles();
-        }
+        var difficultyValue = newScore / 10;
+        if (difficultyValue == _currentDifficulty) return;
+        
+        _currentDifficulty = difficultyValue;
+        SetAvailableObstacles();
     }
 
-    /// <summary>
-    /// Starts spawning obstacles when game state changes to playing.
-    /// </summary>
     private void GameControllerOnGameStateChanged(GameController.GameState newState)
     {
-        if (newState == GameController.GameState.Playing)
-        {
-            _currentDifficulty = 0; 
-            SetAvailableObstacles();
-            SpawnObstacle();
-        }
-    }
-    
-    /// <summary>
-    ///Sets list of available obstacles, based on current difficulty.
-    /// </summary>
-    private void SetAvailableObstacles()
-    {
-           _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
+        if (newState != GameController.GameState.Playing) return;
+        
+        _currentDifficulty = 0; 
+        SetAvailableObstacles();
+        SpawnObstacle();
     }
 
-    /// <summary>
-    /// Instantiates a random obstacle from the available obstacles.
-    /// </summary>
+    private void SetAvailableObstacles()
+    {
+        _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
+    }
+
     private void SpawnObstacle()
     {
         if (GameController.Instance.CurrentGameState != GameController.GameState.Playing)
             return;
         
         var obstacle = Instantiate(_availableObstacles[Random.Range(0, _availableObstacles.Count)], new Vector2(_spawnLocation, 0), Quaternion.identity);
-        //obstacle.collectable = GetRandomCollectable();
         obstacle.DestroyEvent += SpawnObstacle;
     }
-
-    ///<summary>
-    ///Gets a random collectable based on probability.
-    /// </summary>
     
     public GameObject GetRandomCollectable()
     {
-        Debug.Log("Picking random collectable");
-        
-        int randomValue = Random.Range(0, 100);
-        
-        if (randomValue <= specialCollectablePropability)
-            return specialCollectables[Random.Range(0, specialCollectables.Count)];
-        return defaultCollectable;
+        var randomValue = Random.Range(0, 100);
+        return randomValue <= specialCollectablePropability ? specialCollectables[Random.Range(0, specialCollectables.Count)] : defaultCollectable;
     }
     
-    //Changes the spawn location when the direction changes.
     private void GameControllerOnDirectionChanged(GameController.Direction newDirection)
     {
         _spawnLocation = newDirection == GameController.Direction.Right 
