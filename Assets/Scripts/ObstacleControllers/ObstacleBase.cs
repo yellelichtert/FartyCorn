@@ -55,4 +55,12 @@ public class ObstacleBase : MonoBehaviour
     {
         DestroyEvent?.Invoke();
     }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            GameController.Instance.CurrentScore += 1;
+        }
+    }
 }
