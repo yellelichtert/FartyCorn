@@ -5,8 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b06ad613-fac1-4d83-b47e-ca203c393b69" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Obstacles/Obstacle_01.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Obstacles/Obstacle_01.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ObstacleControllers/ObstacleBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ObstacleControllers/ObstacleBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.FartyCorn/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FartyCorn/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Coin.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Coin.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Collectable_PLACEHOLDER.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Collectable_PLACEHOLDER.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Obstacles/Obstacle_02.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Obstacles/Obstacle_02.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CollectableScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Collectable_Base.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CollectableScript.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Collectable_Base.cs.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +91,7 @@
       <updated>1726832977097</updated>
       <workItem from="1726832978666" duration="4156000" />
       <workItem from="1726837567958" duration="22753000" />
-      <workItem from="1726999257630" duration="13004000" />
+      <workItem from="1726999257630" duration="14554000" />
     </task>
     <servers />
   </component>

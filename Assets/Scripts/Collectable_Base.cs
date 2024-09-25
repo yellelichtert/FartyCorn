@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class CollectableScript : MonoBehaviour
+public class Collectable_Base : MonoBehaviour
 {
 
     private AudioSource _collectSound;
@@ -15,7 +15,7 @@ public class CollectableScript : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    public virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
@@ -23,7 +23,7 @@ public class CollectableScript : MonoBehaviour
             
             _collectSound.Play();
             
-            GetComponent<SpriteRenderer>().enabled = false;
+            _spriteRenderer.enabled = false;
         }
     }
 
