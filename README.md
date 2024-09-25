@@ -27,7 +27,7 @@ At the moment, **Farty Corn** is not accepting contributions as the project is i
 ## 📜 License
 
 ### Code License
-The code for **Farty Corn** is licensed under the **GNU General Public License (GPL) v3.0**. This license ensures that all modified versions of the code remain open-source, and no one can use it for commercial purposes without your consent.
+The code for **Farty Corn** is licensed under the **GNU General Public License (GPL) v3.0**. This license ensures that all modified versions of the code remain open-source, the code may not be reused for commercial purposes without explicit written consent.
 
 You can read more about this license here: [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.html).
 
