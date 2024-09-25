@@ -5,7 +5,7 @@ public class UIController : MonoBehaviour
 {
     //Singleton
     public static UIController Instance;
-
+    
     private UIDocument _uiDoc;
     private Label _currentScoreLabel;
 
@@ -32,7 +32,6 @@ public class UIController : MonoBehaviour
         _menuScoreLabel = _menu.Q<Label>("menuCurrentScore");
         _highScoreLabel = _uiDoc.rootVisualElement.Q<Label>("highScore");
         _playButton = _uiDoc.rootVisualElement.Q<Button>("playButton");
-        
 
         //Set events
         _playButton.clicked += PlayButtonOnclicked;
@@ -89,6 +88,7 @@ public class UIController : MonoBehaviour
 
     private void PlayButtonOnclicked()
     {
+        
         GameController.Instance.CurrentGameState = GameController.GameState.Playing;
     }
 

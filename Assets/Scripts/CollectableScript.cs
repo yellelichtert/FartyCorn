@@ -24,10 +24,7 @@ public class CollectableScript : MonoBehaviour
             
             _collectSound.Play();
             
-
             GetComponent<SpriteRenderer>().enabled = false;
-
-
         }
     }
 

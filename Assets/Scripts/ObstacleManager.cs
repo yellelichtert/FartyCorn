@@ -14,18 +14,20 @@ public class ObstacleManager : MonoBehaviour
 
     [SerializeField] public float moveSpeed;
     [SerializeField] private List<ObstacleBase> obstacles;
+    [SerializeField] private GameObject defaultCollectable;
+    [SerializeField] private List<GameObject> specialCollectables;
+    [SerializeField] private int specialCollectablePropability;
     
     private List<ObstacleBase> _availableObstacles;
     private int _currentDifficulty = 0;
     private float _spawnLocation;
     
-    // Start is called before the first frame update
     void Start()
     {
         //Sets spawn location to right edge of the screen.
         _spawnLocation = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x+1;
         
-        //Sets initial obstacles
+        //Sets initial obstacles.
         _availableObstacles = _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
         
         GameController.ScoreChanged += GameControllerOnScoreChanged;
@@ -33,7 +35,7 @@ public class ObstacleManager : MonoBehaviour
     }
     
     /// <summary>
-    /// Adds obstacles with greater difficulty
+    /// Adds obstacles with greater difficulty.
     /// </summary>
     private void GameControllerOnScoreChanged(int newScore)
     {
@@ -43,11 +45,10 @@ public class ObstacleManager : MonoBehaviour
             _currentDifficulty = difficultyValue;
             SetAvailableObstacles();
         }
-                    
     }
 
     /// <summary>
-    /// Starts spawning obstacles when game state changes to Playing.
+    /// Starts spawning obstacles when game state changes to playing.
     /// </summary>
     private void GameControllerOnGameStateChanged(GameController.GameState newState)
     {
@@ -59,14 +60,16 @@ public class ObstacleManager : MonoBehaviour
         }
     }
     
-    //
+    /// <summary>
+    ///Sets list of available obstacles, based on current difficulty.
+    /// </summary>
     private void SetAvailableObstacles()
     {
            _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
     }
 
     /// <summary>
-    /// Instantiates a random obstacle from the available obstacles
+    /// Instantiates a random obstacle from the available obstacles.
     /// </summary>
     private void SpawnObstacle()
     {
@@ -74,6 +77,22 @@ public class ObstacleManager : MonoBehaviour
             return;
         
         var obstacle = Instantiate(_availableObstacles[Random.Range(0, _availableObstacles.Count)], new Vector2(_spawnLocation, 0), Quaternion.identity);
+        //obstacle.collectable = GetRandomCollectable();
         obstacle.DestroyEvent += SpawnObstacle;
+    }
+
+    ///<summary>
+    ///Gets a random collectable based on probability.
+    /// </summary>
+    
+    public GameObject GetRandomCollectable()
+    {
+        Debug.Log("Picking random collectable");
+        
+        int randomValue = Random.Range(0, 100);
+        
+        if (randomValue <= specialCollectablePropability)
+            return specialCollectables[Random.Range(0, specialCollectables.Count)];
+        return defaultCollectable;
     }
 }

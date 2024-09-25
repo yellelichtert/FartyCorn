@@ -8,10 +8,11 @@ public class ObstacleBase : MonoBehaviour
 {
     [SerializeField] public int difficulty;
     [SerializeField] public float heightVariation;
-    public event Action DestroyEvent;
+    
     private float _moveSpeed;
     private float _startLocation;
-
+    public event Action DestroyEvent;
+    
     public void Start()
     {
         _moveSpeed = ObstacleManager.Instance.moveSpeed;
@@ -19,6 +20,17 @@ public class ObstacleBase : MonoBehaviour
         
         //move to random height.
         transform.position = new Vector2(_startLocation, GetRandomHeight());
+
+        //Get random collectable & collectable locations.
+        var randomCollectable = ObstacleManager.Instance.GetRandomCollectable();
+        var collectables = GameObject.FindGameObjectsWithTag("Collectable");
+
+        //Fill al collectable location with the random collectable.
+        foreach (var collectable in collectables)
+        {
+            var collectableObject = Instantiate(randomCollectable, collectable.transform, true);
+            collectableObject.transform.position = collectable.transform.position;
+        }
     }
     
     public virtual void FixedUpdate()
