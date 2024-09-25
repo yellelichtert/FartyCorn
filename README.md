@@ -22,7 +22,7 @@ Currently, there's no version available for installation. Please check back soon
 - **Gassy Unicorn:** Because why not?
 
 ## 🛠️ Contributing
-At the moment, **Farty Corn** is not accepting contributions as the project is in early development. However, feel free to watch the repository for updates, and we will open it up to contributors in the future.
+Since **Farty Corn** is a personal portfolio project, I will not be accepting any contributions. 
 
 ## 📜 License
 
