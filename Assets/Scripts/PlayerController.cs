@@ -11,10 +11,13 @@ public class PlayerController : MonoBehaviour
     
     private Rigidbody2D _rb;
     private AudioSource _audio;
+    private SpriteRenderer _renderer;
     
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _renderer = GetComponent<SpriteRenderer>();
+        
         GameController.DirectionChanged += GameControllerOnDirectionChanged;
     }
     
@@ -43,6 +46,7 @@ public class PlayerController : MonoBehaviour
     private void GameControllerOnDirectionChanged(GameController.Direction newDirection)
     {
         transform.position = newDirection == GameController.Direction.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
+        _renderer.flipX = newDirection == GameController.Direction.Left;
     }
 
     private void OnDestroy()

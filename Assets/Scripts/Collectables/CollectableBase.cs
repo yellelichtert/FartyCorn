@@ -5,18 +5,18 @@ namespace Collectables
     public class CollectableBase : MonoBehaviour
     {
         private AudioSource _collectSound;
-        private SpriteRenderer _spriteRenderer;
+        public SpriteRenderer spriteRenderer;
 
-        private void Start()
+        public virtual void Start()
         {
             _collectSound = GetComponent<AudioSource>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         public virtual void OnTriggerEnter2D(Collider2D other)
         {
             _collectSound.Play();
-            _spriteRenderer.enabled = false;
+            spriteRenderer.enabled = false;
         }
 
         private void OnTriggerExit2D(Collider2D other)
