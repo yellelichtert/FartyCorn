@@ -1,4 +1,5 @@
 using System;
+using Enums;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -52,18 +53,18 @@ public class UIController : MonoBehaviour
         _menuScoreLabel.text = "Score: " + newScore;
     }
 
-    private void GameControllerOnGameStateChanged(GameController.GameState newState)
+    private void GameControllerOnGameStateChanged(GameState newState)
     {
         switch (newState)
         {
-            case GameController.GameState.Menu:
+            case GameState.Menu:
                 _logo.visible = true;
                 _currentScoreLabel.visible = false;
                 _menu.visible = true;
                 _menuScoreLabel.visible = true;
                 _currentScoreLabel.visible = false;
                 break;
-            case GameController.GameState.Playing:
+            case GameState.Playing:
                 _logo.visible = false;
                 _currentScoreLabel.visible = true;
                 _playButton.visible = false;
@@ -73,7 +74,7 @@ public class UIController : MonoBehaviour
                 _menuScoreLabel.visible = false;
                 _logo.visible = false;
                 break;
-            case GameController.GameState.GameOver:
+            case GameState.GameOver:
                 _logo.visible = true;
                 _playButton.text = "Again";
                 _playButton.visible = true;
@@ -89,7 +90,7 @@ public class UIController : MonoBehaviour
 
     private void PlayButtonOnClicked()
     {
-        GameController.Instance.CurrentGameState = GameController.GameState.Playing;
+        GameController.Instance.CurrentGameState = GameState.Playing;
     }
 
     

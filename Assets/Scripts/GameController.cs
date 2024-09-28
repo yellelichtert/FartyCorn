@@ -18,12 +18,6 @@ public class GameController : MonoBehaviour
     private GameState _currentGameState;
     private GameDirection _currentGameDirection;
     
-    public enum GameState
-    {
-        Menu,
-        Playing,
-        GameOver
-    }
 
     public static event Action<GameState> GameStateChanged;
     public static event Action<int> ScoreChanged;

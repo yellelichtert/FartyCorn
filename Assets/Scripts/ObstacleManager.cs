@@ -45,9 +45,9 @@ public class ObstacleManager : MonoBehaviour
         SetAvailableObstacles();
     }
 
-    private void GameControllerOnGameStateChanged(GameController.GameState newState)
+    private void GameControllerOnGameStateChanged(GameState newState)
     {
-        if (newState != GameController.GameState.Playing) return;
+        if (newState != GameState.Playing) return;
         
         _currentDifficulty = 0; 
         SetAvailableObstacles();
@@ -61,7 +61,7 @@ public class ObstacleManager : MonoBehaviour
 
     private void SpawnObstacle()
     {
-        if (GameController.Instance.CurrentGameState != GameController.GameState.Playing)
+        if (GameController.Instance.CurrentGameState != GameState.Playing)
             return;
         
         var obstacle = Instantiate(_availableObstacles[Random.Range(0, _availableObstacles.Count)], new Vector2(_spawnLocation, 0), Quaternion.identity);

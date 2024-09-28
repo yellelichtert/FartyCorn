@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Enums;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -26,15 +27,15 @@ public class ObjectSpawner : MonoBehaviour
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
     }
 
-    private void GameControllerOnGameStateChanged(GameController.GameState newState)
+    private void GameControllerOnGameStateChanged(GameState newState)
     {
         switch (newState)
         {
-            case GameController.GameState.Playing:
+            case GameState.Playing:
                 Instantiate(playerPrefab, playerVector, Quaternion.identity);
                 InvokeSpawnCloud();
                 break;
-            case GameController.GameState.GameOver:
+            case GameState.GameOver:
                 CancelInvoke();
                 break;
         }
