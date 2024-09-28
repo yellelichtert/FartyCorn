@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Enums;
 using Obstacles;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -73,9 +74,9 @@ public class ObstacleManager : MonoBehaviour
         return randomValue <= specialCollectablePropability ? specialCollectables[Random.Range(0, specialCollectables.Count)] : defaultCollectable;
     }
     
-    private void GameControllerOnDirectionChanged(GameController.Direction newDirection)
+    private void GameControllerOnDirectionChanged(GameDirection newGameDirection)
     {
-        _spawnLocation = newDirection == GameController.Direction.Right 
+        _spawnLocation = newGameDirection == GameDirection.Right 
             ? math.abs(_spawnLocation) : -_spawnLocation;
     }
 }

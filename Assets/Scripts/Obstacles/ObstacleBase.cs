@@ -1,4 +1,5 @@
 using System;
+using Enums;
 using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -21,7 +22,7 @@ namespace Obstacles
             _moveSpeed = ObstacleManager.Instance.moveSpeed;
             _startLocation = transform.position.x;
         
-            _movementDirection = GameController.Instance.CurrentDirection == GameController.Direction.Left 
+            _movementDirection = GameController.Instance.CurrentGameDirection == GameDirection.Left 
                 ? Vector2.right : Vector2.left;
             
             transform.position = new Vector2(_startLocation, GetRandomHeight());
@@ -57,9 +58,9 @@ namespace Obstacles
             }
         }
     
-        private void GameControllerOnDirectionChanged(GameController.Direction newDirection)
+        private void GameControllerOnDirectionChanged(GameDirection newGameDirection)
         {
-            if (newDirection == GameController.Direction.Left)
+            if (newGameDirection == GameDirection.Left)
             {
                 _movementDirection = Vector2.right;
                 _startLocation = -_startLocation;

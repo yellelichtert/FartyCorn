@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Enums;
 using UnityEngine;
 
 
@@ -8,7 +9,6 @@ public class GameController : MonoBehaviour
     public static GameController Instance;
     private void Awake() => Instance = this;
     
-    
     [SerializeField] float obstacleSpeed;
     [SerializeField] GameObject background;
     
@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     private int _currentScore;
     
     private GameState _currentGameState;
-    private Direction _currentDirection;
+    private GameDirection _currentGameDirection;
     
     public enum GameState
     {
@@ -24,16 +24,11 @@ public class GameController : MonoBehaviour
         Playing,
         GameOver
     }
-    public enum Direction
-    {
-        Left,
-        Right
-    }
 
     public static event Action<GameState> GameStateChanged;
     public static event Action<int> ScoreChanged;
     public static event Action<int> HighScoreChanged;
-    public static event Action<Direction> DirectionChanged;
+    public static event Action<GameDirection> DirectionChanged;
 
     private void Start()
     {
@@ -58,7 +53,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public int HighScore
+    private int HighScore
     {
         get => _highScore;
         set
@@ -82,7 +77,7 @@ public class GameController : MonoBehaviour
             if (_currentGameState == GameState.Playing)
             {
                 CurrentScore = 0;
-                CurrentDirection = Direction.Right;
+                CurrentGameDirection = GameDirection.Right;
             }
             
             else if (_currentGameState == GameState.GameOver)
@@ -101,12 +96,12 @@ public class GameController : MonoBehaviour
         get => obstacleSpeed;
     }
 
-    public Direction CurrentDirection
+    public GameDirection CurrentGameDirection
     {
-        get => _currentDirection;
+        get => _currentGameDirection;
         set
         {
-            _currentDirection = value;
+            _currentGameDirection = value;
             DirectionChanged?.Invoke(value);
         }
     }

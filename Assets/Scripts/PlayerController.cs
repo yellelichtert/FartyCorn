@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enums;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -43,10 +44,10 @@ public class PlayerController : MonoBehaviour
         Destroy(thrust.gameObject);
     }
     
-    private void GameControllerOnDirectionChanged(GameController.Direction newDirection)
+    private void GameControllerOnDirectionChanged(GameDirection newGameDirection)
     {
-        transform.position = newDirection == GameController.Direction.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
-        _renderer.flipX = newDirection == GameController.Direction.Left;
+        transform.position = newGameDirection == GameDirection.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
+        _renderer.flipX = newGameDirection == GameDirection.Left;
     }
 
     private void OnDestroy()

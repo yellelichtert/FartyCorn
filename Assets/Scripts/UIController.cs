@@ -1,9 +1,12 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
 {
+    [SerializeField] private GameObject playerPrefab;
     public static UIController Instance;
 
     private UIDocument _uiDoc;
@@ -16,6 +19,7 @@ public class UIController : MonoBehaviour
     private Label _highScoreLabel;
     private Button _playButton;
     
+    private Animator _playerSpriteAnimator;
     
     void Awake()
     {
