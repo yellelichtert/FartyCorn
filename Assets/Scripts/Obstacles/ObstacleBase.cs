@@ -19,7 +19,7 @@ namespace Obstacles
     
         public void Start()
         {
-            _moveSpeed = ObstacleManager.Instance.moveSpeed;
+            _moveSpeed = ObstacleManager.Instance.MoveSpeed;
             _startLocation = transform.position.x;
         
             _movementDirection = GameController.Instance.CurrentGameDirection == GameDirection.Left 

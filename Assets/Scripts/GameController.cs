@@ -9,8 +9,8 @@ public class GameController : MonoBehaviour
     public static GameController Instance;
     private void Awake() => Instance = this;
     
-    [SerializeField] float obstacleSpeed;
-    [SerializeField] GameObject background;
+    [SerializeField] private float obstacleSpeed;
+    [SerializeField] private GameObject background;
     
     private int _highScore = 0;
     private int _currentScore;
@@ -26,6 +26,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 45;
         var screen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         
         HighScore = PlayerPrefs.GetInt("HighScore", 0);

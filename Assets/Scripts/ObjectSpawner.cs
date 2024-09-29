@@ -25,6 +25,7 @@ public class ObjectSpawner : MonoBehaviour
         _screen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
+        PlayerController.FirstFlap += InvokeSpawnCloud;
     }
 
     private void GameControllerOnGameStateChanged(GameState newState)
@@ -33,7 +34,6 @@ public class ObjectSpawner : MonoBehaviour
         {
             case GameState.Playing:
                 Instantiate(playerPrefab, playerVector, Quaternion.identity);
-                InvokeSpawnCloud();
                 break;
             case GameState.GameOver:
                 CancelInvoke();

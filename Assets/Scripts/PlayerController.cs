@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;
     private AudioSource _audio;
     private SpriteRenderer _renderer;
+    private bool _firstFlap = true;
+
+    public static event Action FirstFlap;
     
     private void Start()
     {
@@ -24,6 +27,13 @@ public class PlayerController : MonoBehaviour
     
     public void Flap()
     {
+        if (_firstFlap)
+        {
+            _firstFlap = false;
+            FirstFlap?.Invoke();
+            _rb.simulated = true;
+        }
+            
         _rb.AddForce(Vector2.up * flapForce, ForceMode2D.Impulse);
         StartCoroutine(Thrust());
     }

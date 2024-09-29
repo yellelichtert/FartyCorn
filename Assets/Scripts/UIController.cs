@@ -7,18 +7,18 @@ using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private Texture2D tapToStartSprite;
+    
     public static UIController Instance;
 
     private UIDocument _uiDoc;
     private Label _currentScoreLabel;
-
     private VisualElement _menu;
     private Label _logo;
-    
     private Label _menuScoreLabel;
     private Label _highScoreLabel;
     private Button _playButton;
+    private VisualElement _tapToStart;
     
     private Animator _playerSpriteAnimator;
     
@@ -35,6 +35,8 @@ public class UIController : MonoBehaviour
         _menuScoreLabel = _menu.Q<Label>("menuCurrentScore");
         _highScoreLabel = _uiDoc.rootVisualElement.Q<Label>("highScore");
         _playButton = _uiDoc.rootVisualElement.Q<Button>("playButton");
+        _tapToStart = _uiDoc.rootVisualElement.Q<VisualElement>("tapToStart");
+        
         
         _playButton.clicked += PlayButtonOnClicked;
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
@@ -73,6 +75,8 @@ public class UIController : MonoBehaviour
                 _currentScoreLabel.visible = true;
                 _menuScoreLabel.visible = false;
                 _logo.visible = false;
+                _tapToStart.visible = true;
+                PlayerController.FirstFlap += () => _tapToStart.visible = false;
                 break;
             case GameState.GameOver:
                 _logo.visible = true;

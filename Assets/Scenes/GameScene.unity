@@ -486,7 +486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 7273248192616886108, guid: 72817a79ff40b4443823b8d668d5e0e1, type: 3}
-  playerVector: {x: -1, y: 0}
+  playerVector: {x: -1.5, y: 0}
   cloudPrefab: {fileID: 8935153669835651861, guid: 701b79b3db7174dfb94f2171a16cbd95, type: 3}
   cloudSprites:
   - {fileID: 21300000, guid: eded9789002ef461392059f00cf64fe8, type: 3}
@@ -512,7 +512,7 @@ MonoBehaviour:
   - {fileID: 6140589288293814444, guid: 7f69dc5812f2f4ee8ad4cac5016ddd27, type: 3}
   defaultCollectable: {fileID: 2160127286497970619, guid: f2344a5f64aab49b0b098ec35d4f11ca, type: 3}
   specialCollectables:
-  - {fileID: 1359371643045781666, guid: 18c73c09dde0a41ba8c7bb0dfb15c1e4, type: 3}
+  - {fileID: 3807319144912723364, guid: eeaecea5651bb4f83a48d5b134cfd3b8, type: 3}
   specialCollectablePropability: 10
 --- !u!1 &2120262415
 GameObject:
@@ -575,6 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915e8a91b14b944ceaec7d94c5608e90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tapToStartSprite: {fileID: 2800000, guid: 09c1a8cf649bc45a99b2eda6890ffae5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

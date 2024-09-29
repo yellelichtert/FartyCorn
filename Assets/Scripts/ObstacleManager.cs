@@ -14,7 +14,7 @@ public class ObstacleManager : MonoBehaviour
     public static ObstacleManager Instance;
     private void Awake() => Instance = this;
 
-    [SerializeField] public float moveSpeed;
+    [SerializeField] private float moveSpeed;
     [SerializeField] private List<ObstacleBase> obstacles;
     [SerializeField] private GameObject defaultCollectable;
     [SerializeField] private List<GameObject> specialCollectables;
@@ -25,11 +25,15 @@ public class ObstacleManager : MonoBehaviour
     private float _spawnLocation;
     private bool _directionChanged;
     
+    public float MoveSpeed => moveSpeed;
+    
     private void Start()
     {
         _spawnLocation = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x+1;
         
         _availableObstacles = _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
+        
+        PlayerController.FirstFlap += SpawnObstacle;
         
         GameController.ScoreChanged += GameControllerOnScoreChanged;
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
@@ -49,9 +53,9 @@ public class ObstacleManager : MonoBehaviour
     {
         if (newState != GameState.Playing) return;
         
+        
         _currentDifficulty = 0; 
         SetAvailableObstacles();
-        SpawnObstacle();
     }
 
     private void SetAvailableObstacles()
