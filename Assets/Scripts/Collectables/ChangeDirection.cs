@@ -24,7 +24,7 @@ namespace Collectables
             var newDirection = _gameController.CurrentGameDirection == GameDirection.Left
                 ? GameDirection.Right : GameDirection.Left; 
         
-            GameController.Instance.CurrentGameDirection = newDirection;
+            _gameController.CurrentGameDirection = newDirection;
             base.OnTriggerEnter2D(other);
         }
     }

@@ -9,7 +9,6 @@ public class GameController : MonoBehaviour
     public static GameController Instance;
     private void Awake() => Instance = this;
     
-    [SerializeField] private float obstacleSpeed;
     [SerializeField] private GameObject background;
     
     private int _highScore = 0;
@@ -26,11 +25,12 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        Application.targetFrameRate = 45;
+        Application.targetFrameRate = 15;
         var screen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         
         HighScore = PlayerPrefs.GetInt("HighScore", 0);
         background.transform.localScale = new Vector2(Screen.width, Screen.height);
+        PlayerController.FirstFlap += () => Application.targetFrameRate = 60;
     }
 
 
@@ -74,23 +74,20 @@ public class GameController : MonoBehaviour
                 CurrentScore = 0;
                 CurrentGameDirection = GameDirection.Right;
             }
-            
             else if (_currentGameState == GameState.GameOver)
             {
                 var gamePlayObjects = GameObject.FindGameObjectsWithTag("GamePlayObject");
                 foreach (var gamePlayObject in gamePlayObjects)
                     Destroy(gamePlayObject);
             }
+            
+            if (_currentGameState != GameState.Playing)
+                Application.targetFrameRate = 15;
 
             GameStateChanged?.Invoke(value);
         }
     }
     
-    public float ObstacleSpeed
-    {
-        get => obstacleSpeed;
-    }
-
     public GameDirection CurrentGameDirection
     {
         get => _currentGameDirection;
