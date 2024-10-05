@@ -5,7 +5,6 @@ using PowerUps;
 using Unity.Mathematics;
 using UnityEngine;
 
-
 public class PlayerController : MonoBehaviour
 {
      
@@ -16,7 +15,12 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;
     private SpriteRenderer _renderer;
     private bool _firstFlap = true;
+    
+    
+    
     public static event Action FirstFlap;
+    
+    
     
     private void Start()
     {
@@ -32,17 +36,18 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    
     private void Update()
     {
         if (Input.touchCount > 0)
         {
             if (Input.GetTouch(0).phase == UnityEngine.TouchPhase.Began)
-            {
                 Flap();
-            }
         }
     }
 
+    
+    
     private void Flap()
     { 
         if (GetComponent<JetPackPowerUp>()) return;
@@ -59,12 +64,16 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(Thrust());
     }
     
+    
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Destroy(gameObject);
         GameController.Instance.CurrentGameState = GameState.GameOver;
     }
 
+    
+    
     private IEnumerator Thrust()
     {
         var thrust = Instantiate(_thrustPrefab, new Vector2(transform.position.x+0.1f, transform.position.y-0.5f), Quaternion.identity);
@@ -75,12 +84,16 @@ public class PlayerController : MonoBehaviour
         Destroy(thrust.gameObject);
     }
     
+    
+    
     private void GameControllerOnDirectionChanged(GameDirection newGameDirection)
     {
         transform.position = newGameDirection == GameDirection.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
         _renderer.flipX = newGameDirection == GameDirection.Left;
     }
 
+    
+    
     private void OnDestroy()
     {
         GameController.DirectionChanged -= GameControllerOnDirectionChanged;

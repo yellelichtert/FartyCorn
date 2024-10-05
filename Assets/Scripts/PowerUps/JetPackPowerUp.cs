@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace PowerUps
 {
-    public class JetPackPowerUp : MonoBehaviour
+    public class JetPackPowerUp : PowerUpBase
     {
         private float _fuel;
         private float _jetpackPower;

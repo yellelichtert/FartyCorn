@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Enums;
 using Obstacles;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,12 +10,16 @@ public class ObstacleManager : MonoBehaviour
 {
     public static ObstacleManager Instance;
     private void Awake() => Instance = this;
-
+    
+    
+    
     [SerializeField] private float moveSpeed;
     [SerializeField] private List<ObstacleBase> obstacles;
     [SerializeField] private GameObject defaultCollectable;
     [SerializeField] private List<GameObject> specialCollectables;
     [SerializeField] private int specialCollectablePropability;
+    
+    
     
     private List<ObstacleBase> _availableObstacles;
     private int _currentDifficulty = 0;
@@ -29,16 +30,18 @@ public class ObstacleManager : MonoBehaviour
     
     private void Start()
     {
-        _spawnLocation = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x+1;
+        _spawnLocation = Camera.main!.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x+1;
         
         _availableObstacles = _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
         
-        PlayerController.FirstFlap += SpawnObstacle;
         
+        PlayerController.FirstFlap += SpawnObstacle;
         GameController.ScoreChanged += GameControllerOnScoreChanged;
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         GameController.DirectionChanged += GameControllerOnDirectionChanged;
     }
+    
+    
     
     private void GameControllerOnScoreChanged(int newScore)
     {
@@ -49,20 +52,25 @@ public class ObstacleManager : MonoBehaviour
         SetAvailableObstacles();
     }
 
+    
+    
     private void GameControllerOnGameStateChanged(GameState newState)
     {
         if (newState != GameState.Playing) return;
-        
         
         _currentDifficulty = 0; 
         SetAvailableObstacles();
     }
 
+    
+    
     private void SetAvailableObstacles()
     {
         _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
     }
 
+    
+    
     private void SpawnObstacle()
     {
         if (GameController.Instance.CurrentGameState != GameState.Playing)
@@ -72,15 +80,23 @@ public class ObstacleManager : MonoBehaviour
         obstacle.DestroyEvent += SpawnObstacle;
     }
     
+    
+    
     public GameObject GetRandomCollectable()
     {
         var randomValue = Random.Range(0, 100);
-        return randomValue <= specialCollectablePropability ? specialCollectables[Random.Range(0, specialCollectables.Count)] : defaultCollectable;
+        
+        return randomValue <= specialCollectablePropability 
+            ? specialCollectables[Random.Range(0, specialCollectables.Count)] 
+            : defaultCollectable;
     }
+    
+    
     
     private void GameControllerOnDirectionChanged(GameDirection newGameDirection)
     {
         _spawnLocation = newGameDirection == GameDirection.Right 
-            ? math.abs(_spawnLocation) : -_spawnLocation;
+            ? math.abs(_spawnLocation) 
+            : -_spawnLocation;
     }
 }

@@ -8,22 +8,29 @@ namespace Obstacles
 {
     public class ObstacleBase : MonoBehaviour
     {
+        
         [SerializeField] public int difficulty;
         [SerializeField] public float heightVariation;
     
+        
         private float _moveSpeed;
         private float _startLocation;
         private Vector2 _movementDirection;
+        
+        
+        
         public event Action DestroyEvent;
     
     
+        
         public void Start()
         {
             _moveSpeed = ObstacleManager.Instance.MoveSpeed;
             _startLocation = transform.position.x;
         
             _movementDirection = GameController.Instance.CurrentGameDirection == GameDirection.Left 
-                ? Vector2.right : Vector2.left;
+                ? Vector2.right 
+                : Vector2.left;
             
             transform.position = new Vector2(_startLocation, GetRandomHeight());
             
@@ -39,6 +46,8 @@ namespace Obstacles
             GameController.DirectionChanged += GameControllerOnDirectionChanged;
         }
     
+        
+        
         public virtual void FixedUpdate()
         {
             transform.Translate(_movementDirection * (_moveSpeed * Time.deltaTime));
@@ -50,6 +59,8 @@ namespace Obstacles
             }
         }
 
+        
+        
         private void OnTriggerExit2D(Collider2D other)
         {
             if (other.CompareTag("Player"))
@@ -58,6 +69,8 @@ namespace Obstacles
             }
         }
     
+        
+        
         private void GameControllerOnDirectionChanged(GameDirection newGameDirection)
         {
             if (newGameDirection == GameDirection.Left)
@@ -72,15 +85,21 @@ namespace Obstacles
             }
         }
         
+        
+        
         private void OnDestroy()
         {
             DestroyEvent?.Invoke();
         }
         
+        
+        
         private bool IsOutOfBounds()
         {
             return (_startLocation > 0 && transform.position.x < -_startLocation) || (_startLocation < 0 && transform.position.x > math.abs(_startLocation));
         }
+        
+        
         
         protected virtual float GetRandomHeight()
         {
