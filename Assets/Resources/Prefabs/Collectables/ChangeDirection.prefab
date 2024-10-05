@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6641863913471504441}
   - component: {fileID: 7282631294116209551}
   m_Layer: 0
-  m_Name: ChangeDirectionPlaceHolder
+  m_Name: ChangeDirection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

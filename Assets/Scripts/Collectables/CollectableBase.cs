@@ -18,8 +18,9 @@ namespace Collectables
         public virtual void OnTriggerEnter2D(Collider2D other)
         {
             _collider2D.enabled = false;
-            _collectSound.Play();
             SpriteRenderer.enabled = false;
+            
+            if (_collectSound != null) _collectSound.Play();
         }
     }
 }

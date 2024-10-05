@@ -1,39 +1,60 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Enums;
+using PowerUps;
 using Unity.Mathematics;
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float flapForce;
-    [SerializeField] GameObject thrustPrefab;
+     
+    [SerializeField] private float flapForce;
     
+    private GameObject _thrustPrefab;
+    private AudioSource _flapSound;
     private Rigidbody2D _rb;
-    private AudioSource _audio;
     private SpriteRenderer _renderer;
     private bool _firstFlap = true;
-
     public static event Action FirstFlap;
     
     private void Start()
     {
+        _flapSound = gameObject.AddComponent<AudioSource>();
+        _flapSound.clip = Resources.Load<AudioClip>("Audio/Fart");
+        
+        _thrustPrefab = Resources.Load<GameObject>("Prefabs/Thrust");
+     
         _rb = GetComponent<Rigidbody2D>();
         _renderer = GetComponent<SpriteRenderer>();
         
         GameController.DirectionChanged += GameControllerOnDirectionChanged;
     }
-    
-    public void Flap()
+
+
+    private void Update()
     {
+        if (Input.touchCount > 0)
+        {
+            if (Input.GetTouch(0).phase == UnityEngine.TouchPhase.Began)
+            {
+                Flap();
+            }
+        }
+    }
+
+    private void Flap()
+    { 
+        if (GetComponent<JetPackPowerUp>()) return;
+        
         if (_firstFlap)
         {
             _firstFlap = false;
             FirstFlap?.Invoke();
             _rb.simulated = true;
         }
-            
+        
+        _flapSound.Play();
         _rb.AddForce(Vector2.up * flapForce, ForceMode2D.Impulse);
         StartCoroutine(Thrust());
     }
@@ -46,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator Thrust()
     {
-        var thrust = Instantiate(thrustPrefab, new Vector2(transform.position.x+0.1f, transform.position.y-0.5f), Quaternion.identity);
+        var thrust = Instantiate(_thrustPrefab, new Vector2(transform.position.x+0.1f, transform.position.y-0.5f), Quaternion.identity);
         
         var animationLength = thrust.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length;
         
@@ -64,4 +85,5 @@ public class PlayerController : MonoBehaviour
     {
         GameController.DirectionChanged -= GameControllerOnDirectionChanged;
     }
+    
 }

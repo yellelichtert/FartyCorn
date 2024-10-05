@@ -100,8 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3048b57c6f6074d609d5af3b50af4802, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flapForce: 2
-  thrustPrefab: {fileID: 2894106392469271184, guid: 0ff6ac0ebed2f4eb28ca100d49a8b822, type: 3}
+  flapForce: 5
 --- !u!50 &6322762997297281030
 Rigidbody2D:
   serializedVersion: 4
@@ -155,19 +154,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8675272588916989085}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: Flap
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 0e5484a8-cf96-4af2-86cc-396eee13c232
     m_ActionName: Player/Flap[/Keyboard/space,/Device Simulator Touchscreen/primaryTouch/tap]
   - m_PersistentCalls:
