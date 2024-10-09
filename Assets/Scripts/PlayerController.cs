@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
-            if (Input.GetTouch(0).phase == UnityEngine.TouchPhase.Began)
+            if (Input.GetTouch(0).phase == TouchPhase.Began)
                 Flap();
         }
     }

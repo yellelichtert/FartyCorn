@@ -2,8 +2,7 @@ using UnityEngine;
 
 namespace PowerUps
 {
-    public class PowerUpBase : MonoBehaviour
+    public abstract class PowerUpBase : MonoBehaviour
     {
-        
     }
 }

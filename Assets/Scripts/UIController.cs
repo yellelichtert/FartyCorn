@@ -11,48 +11,38 @@ public class UIController : MonoBehaviour
     
     public static UIController Instance;
 
-    private UIDocument _uiDoc;
-    private Label _currentScoreLabel;
-    private VisualElement _menu;
-    private Label _logo;
-    private Label _menuScoreLabel;
-    private Label _highScoreLabel;
-    private Button _playButton;
-    private VisualElement _tapToStart;
-    
-    private Animator _playerSpriteAnimator;
+    private VisualElement _uiRoot;
+    private VisualElement _mainMenu;
     
     void Awake()
     {
         Instance = this;
         
-        _uiDoc = GetComponent<UIDocument>();
+        _uiRoot = GetComponent<UIDocument>().rootVisualElement;
+        _mainMenu = _uiRoot.Q<VisualElement>("MainMenu");
         
-        _currentScoreLabel = _uiDoc.rootVisualElement.Q<Label>("currentScore");
+        Button playButton = _uiRoot.Q<Button>("PlayButton");
+        playButton.clicked += PlayButtonOnClicked;
         
-        _logo = _uiDoc.rootVisualElement.Q<Label>("logo");
-        _menu = _uiDoc.rootVisualElement.Q<VisualElement>("menu");
-        _menuScoreLabel = _menu.Q<Label>("menuCurrentScore");
-        _highScoreLabel = _uiDoc.rootVisualElement.Q<Label>("highScore");
-        _playButton = _uiDoc.rootVisualElement.Q<Button>("playButton");
-        _tapToStart = _uiDoc.rootVisualElement.Q<VisualElement>("tapToStart");
+        Button settingsButton = _uiRoot.Q<Button>("SettingsButton");
+        settingsButton.clicked += SettingsButtonOnclicked;
         
+        Button upgradesButton = _uiRoot.Q<Button>("UpgradeButton");
+        upgradesButton.clicked += UpgradesButtonOnonClick;
         
-        _playButton.clicked += PlayButtonOnClicked;
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         GameController.ScoreChanged += GameControllerOnScoreChanged;
         GameController.HighScoreChanged += GameControllerOnHighScoreChanged;
     }
-
+    
     private void GameControllerOnHighScoreChanged(int newHighScore)
     {
-        _highScoreLabel.text = "Highscore: " + newHighScore;
+        
     }
 
     private void GameControllerOnScoreChanged(int newScore)
     {
-        _currentScoreLabel.text = newScore.ToString();
-        _menuScoreLabel.text = "Score: " + newScore;
+        
     }
 
     private void GameControllerOnGameStateChanged(GameState newState)
@@ -60,34 +50,13 @@ public class UIController : MonoBehaviour
         switch (newState)
         {
             case GameState.Menu:
-                _logo.visible = true;
-                _currentScoreLabel.visible = false;
-                _menu.visible = true;
-                _menuScoreLabel.visible = true;
-                _currentScoreLabel.visible = false;
-                break;
+                _mainMenu.visible = true;
+               break;
             case GameState.Playing:
-                _logo.visible = false;
-                _currentScoreLabel.visible = true;
-                _playButton.visible = false;
-                _highScoreLabel.visible = false;
-                _menu.visible = false;
-                _currentScoreLabel.visible = true;
-                _menuScoreLabel.visible = false;
-                _logo.visible = false;
-                _tapToStart.visible = true;
-                PlayerController.FirstFlap += () => _tapToStart.visible = false;
-                break;
+                _mainMenu.visible = false;
+              break;
             case GameState.GameOver:
-                _logo.visible = true;
-                _playButton.text = "Again";
-                _playButton.visible = true;
-                _highScoreLabel.visible = true;
-                _menu.visible = true;
-                _menuScoreLabel.visible = true;
-                _currentScoreLabel.visible = false;
-                _logo.text = "Game Over";
-                _logo.visible = true;
+                _mainMenu.visible = true; //Temporary untill gameover screen is done.
                 break;
         }
     }
@@ -96,6 +65,14 @@ public class UIController : MonoBehaviour
     {
         GameController.Instance.CurrentGameState = GameState.Playing;
     }
-
     
+    private void SettingsButtonOnclicked()
+    {
+        throw new NotImplementedException();
+    }
+    
+    private void UpgradesButtonOnonClick()
+    {
+        throw new NotImplementedException();
+    }
 }

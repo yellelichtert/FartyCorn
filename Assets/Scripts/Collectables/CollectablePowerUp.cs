@@ -1,7 +1,6 @@
 using System;
 using Data;
 using PowerUps;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Collectables
@@ -9,27 +8,22 @@ namespace Collectables
     public class CollectablePowerUp : CollectableBase
     {
         
-        private PowerUpBase _powerUpType; //This is the variable I want to use
+        private PowerUpBase _powerUp; 
+        
+        
         
         protected override void Start()
         {
             base.Start();
             
-            Debug.Log("CollectablePowerUpNAme: " + _powerUpType.GetType());
             
-            _powerUpType = PowerUpTypes.GetRandom(); 
-            SpriteRenderer.sprite = Resources.Load<Sprite>($"Sprites/{_powerUpType.GetType()}");
+            _powerUp = Data.PowerUps.GetRandom(); 
+            SpriteRenderer.sprite = Resources.Load<Sprite>($"Sprites/{_powerUp.GetType()}");
+            
+            Debug.Log("CollectablePowerUpNAme: " + _powerUp.GetType());
         }
 
         
-        
-        /// <summary>
-        ///
-        /// Dit uitzoeke, nullrefference maar    other.gameObject.AddComponent(_powerUpType.GetType()); zou moete werke
-        /// Hier verder gaan
-        /// </summary>
-        /// <param name="other"></param>
-        /// <exception cref="NotImplementedException"></exception>
 
         protected override void OnTriggerEnter2D(Collider2D other)
         {
@@ -40,11 +34,11 @@ namespace Collectables
             var currentPowerUp = other.GetComponent<PowerUpBase>();
             if (!currentPowerUp)
             {
-                other.gameObject.AddComponent(_powerUpType.GetType());
+                other.gameObject.AddComponent(_powerUp.GetType());
             }
             else
             {
-                throw new NotImplementedException();
+                
             }
         }
     }

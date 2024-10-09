@@ -2,12 +2,13 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace PowerUps
 {
     public class JetPackPowerUp : PowerUpBase
     {
-        private float _fuel;
+        private float _duration;
         private float _jetpackPower;
         
         private bool _holding;
@@ -15,11 +16,12 @@ namespace PowerUps
         private AudioSource _audio;
         private InputAction _moveAction;
         private GameObject _thrustPrefab;
+        private ProgressBar _progressBar;
 
         private void Start()
         {
             _jetpackPower = 20;
-            FillFuel();
+            ResetDuration();
 
             _audio = gameObject.AddComponent<AudioSource>();
             _audio.clip = Resources.Load<AudioClip>("Audio/LongFart");
@@ -27,6 +29,17 @@ namespace PowerUps
             _thrustPrefab = Resources.Load<GameObject>("Prefabs/Thrust");
             
             _rb = GetComponent<Rigidbody2D>();
+
+
+            _progressBar = new ProgressBar()
+            {
+                title = "Fuel",
+                lowValue = 0f,
+                highValue = _duration,
+                value = _duration
+            };
+            _progressBar.visible = true;
+            
         }
 
         private void Update()
@@ -50,11 +63,11 @@ namespace PowerUps
             if (_holding)
             {
                 _rb.AddForce(Vector2.up * _jetpackPower, ForceMode2D.Force);
-                _fuel--;
+                _duration--;
                 StartCoroutine(Thrust());
                 
                 if (!_audio.isPlaying) _audio.Play();
-                if (_fuel <= 0) Destroy(this);
+                if (_duration <= 0) Destroy(this);
             }
             else if (_audio.isPlaying)
             {
@@ -62,7 +75,8 @@ namespace PowerUps
             }
         }
         
-        public void FillFuel() => _fuel = 1000;
+        
+        public void ResetDuration() => _duration = 1000;
         
         
         //Expensive and copy of already existing methods
