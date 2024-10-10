@@ -38,6 +38,9 @@ public class GameController : MonoBehaviour
         PlayerController.FirstFlap += () => Application.targetFrameRate = 60;
 
         CurrentGameState = GameState.Menu;
+        
+        AudioListener.pause = PlayerPrefs.GetInt("SoundEnabled", 1) != 1;
+        
     }
 
     

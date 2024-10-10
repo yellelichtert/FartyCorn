@@ -148,7 +148,7 @@ public class UIController : MonoBehaviour
     private void SoundToggled(ChangeEvent<bool> e)
     {
         PlayerPrefs.SetInt("SoundEnabled", Convert.ToInt32(e.newValue));
-        Camera.main!.GetComponent<AudioListener>().enabled = e.newValue;
+        AudioListener.pause = !e.newValue;
     }
 
     //
