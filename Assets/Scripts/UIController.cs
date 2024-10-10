@@ -23,7 +23,9 @@ public class UIController : MonoBehaviour
 
     private VisualElement _currentMenu;
     private VisualElement _currentSubMenu;
-    
+
+    private Label _gameScore;
+    private Label _highScore;
     
     void Awake()
     {
@@ -66,12 +68,14 @@ public class UIController : MonoBehaviour
         _gameOver.visible = false;
         _share.visible = false;
         
-        
         _uiRoot.Query<Button>(name: "BackButton")
             .ForEach((backButton) =>
             {
                 backButton.clicked += BackButtonOnclicked;
             });
+        
+        _highScore = _uiRoot.Q<Label>("HighScoreValue");
+        _gameScore = _uiRoot.Q<Label>("GameScoreValue");
         
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         GameController.ScoreChanged += GameControllerOnScoreChanged;
@@ -100,6 +104,17 @@ public class UIController : MonoBehaviour
     private void BackButtonOnclicked()
         => CloseSubMenu(); 
 
+    
+    
+    //
+    //Game Events
+    //
+    private void GameControllerOnHighScoreChanged(int newHighScore)
+        => _highScore.text = newHighScore.ToString();
+    
+    private void GameControllerOnScoreChanged(int newScore)
+        => _gameScore.text = newScore.ToString();
+    
     
     
     //
@@ -140,20 +155,5 @@ public class UIController : MonoBehaviour
         _currentSubMenu.visible = false;
         _currentMenu.visible = true;
     }
-    
-    
-    //
-    //Game Events
-    //
-    private void GameControllerOnHighScoreChanged(int newHighScore)
-    {
-    }
-
-
-    private void GameControllerOnScoreChanged(int newScore)
-    {
-    }
-    
-
     
 }
