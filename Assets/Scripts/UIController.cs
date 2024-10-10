@@ -130,7 +130,7 @@ public class UIController : MonoBehaviour
     {
         _currentSubMenu = subMenu;
         
-        _mainMenu.visible = false;
+        _currentMenu.visible = false;
         _currentSubMenu.visible = true;
     }
 
@@ -138,7 +138,7 @@ public class UIController : MonoBehaviour
     private void CloseSubMenu()
     {
         _currentSubMenu.visible = false;
-        _mainMenu.visible = true;
+        _currentMenu.visible = true;
     }
     
     
