@@ -52,7 +52,6 @@ public class UIController : MonoBehaviour
         _currentMenu = _mainMenu;
         
         
-        
         _gameOver = _uiRoot.Q<VisualElement>("GameOver");
         _share = _uiRoot.Q<VisualElement>("Share");
         
@@ -74,8 +73,14 @@ public class UIController : MonoBehaviour
                 backButton.clicked += BackButtonOnclicked;
             });
         
+        
         _highScore = _uiRoot.Q<Label>("HighScoreValue");
         _gameScore = _uiRoot.Q<Label>("GameScoreValue");
+        
+        
+        Toggle soundToggle = _uiRoot.Q<Toggle>("SoundToggle");
+        soundToggle.value = PlayerPrefs.GetInt("SoundEnabled", 1) == 1;
+        soundToggle.RegisterValueChangedCallback(SoundToggled);
         
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         GameController.ScoreChanged += GameControllerOnScoreChanged;
@@ -137,6 +142,14 @@ public class UIController : MonoBehaviour
         _currentMenu.visible = newState != GameState.Playing;
     }
 
+    //
+    //Settings Toggle Handlers
+    //
+    private void SoundToggled(ChangeEvent<bool> e)
+    {
+        PlayerPrefs.SetInt("SoundEnabled", Convert.ToInt32(e.newValue));
+        Camera.main!.GetComponent<AudioListener>().enabled = e.newValue;
+    }
 
     //
     //Methods

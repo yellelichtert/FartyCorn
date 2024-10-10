@@ -9,3 +9,16 @@
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
 }
+
+.Checkbox {
+}
+
+#unity-checkmark {
+    align-self: center;
+    align-items: auto;
+    flex-direction: column;
+    justify-content: center;
+    left: 70%;
+    height: 60%;
+    width: 20%;
+}
