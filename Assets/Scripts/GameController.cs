@@ -9,7 +9,6 @@ public class GameController : MonoBehaviour
     private void Awake() => Instance = this;
     
     
-    
     [SerializeField] private GameObject background;
     
     private int _highScore = 0;
@@ -17,7 +16,6 @@ public class GameController : MonoBehaviour
     private GameState _currentGameState;
     private GameDirection _currentGameDirection;
     
-
     
     public static event Action<GameState> GameStateChanged;
     public static event Action<int> ScoreChanged;
@@ -34,12 +32,10 @@ public class GameController : MonoBehaviour
         background.transform.localScale = new Vector2(Screen.width, Screen.height);
         
         HighScore = PlayerPrefs.GetInt("HighScore", 0);
-        
-        PlayerController.FirstFlap += () => Application.targetFrameRate = 60;
 
         CurrentGameState = GameState.Menu;
         
-        AudioListener.pause = PlayerPrefs.GetInt("SoundEnabled", 1) != 1;
+        SettingsManager.SetUserSettings();
         
     }
 
@@ -92,9 +88,16 @@ public class GameController : MonoBehaviour
                 foreach (var gamePlayObject in gamePlayObjects)
                     Destroy(gamePlayObject);
             }
-            
+
             if (_currentGameState != GameState.Playing)
+            {
                 Application.targetFrameRate = 15;
+            }
+            else
+            {
+                Application.targetFrameRate = SettingsManager.IsLowPowerMode() ? 30 : 60;
+            }
+                
 
             GameStateChanged?.Invoke(value);
         }

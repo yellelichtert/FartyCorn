@@ -41,7 +41,7 @@ public class UIController : MonoBehaviour
         playButton.clicked += PlayButtonOnClicked;
         
         Button settingsButton = _uiRoot.Q<Button>("SettingsButton");
-        settingsButton.clicked += SettingsButtonOnclicked;
+        settingsButton.clicked += SettingsButtonOnClicked;
         
         Button upgradesButton = _uiRoot.Q<Button>("UpgradesButton");
         upgradesButton.clicked += UpgradesButtonOnClick;
@@ -79,8 +79,12 @@ public class UIController : MonoBehaviour
         
         
         Toggle soundToggle = _uiRoot.Q<Toggle>("SoundToggle");
-        soundToggle.value = PlayerPrefs.GetInt("SoundEnabled", 1) == 1;
+        soundToggle.value = SettingsManager.IsSoundEnabled();
         soundToggle.RegisterValueChangedCallback(SoundToggled);
+        
+        Toggle lowPowerModeToggle = _uiRoot.Q<Toggle>("LowPowerModeToggle");
+        lowPowerModeToggle.value = SettingsManager.IsLowPowerMode();
+        lowPowerModeToggle.RegisterValueChangedCallback(LowPowerToggle);
         
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         GameController.ScoreChanged += GameControllerOnScoreChanged;
@@ -97,7 +101,7 @@ public class UIController : MonoBehaviour
     private void PlayButtonOnClicked()
         => _gameController.CurrentGameState = GameState.Playing;
     
-    private void SettingsButtonOnclicked()
+    private void SettingsButtonOnClicked()
         => OpenSubMenu(_settings);
     
     private void UpgradesButtonOnClick()
@@ -107,7 +111,13 @@ public class UIController : MonoBehaviour
         => OpenSubMenu(_share);
     
     private void BackButtonOnclicked()
-        => CloseSubMenu(); 
+        => CloseSubMenu();
+
+    private void SoundToggled(ChangeEvent<bool> e)
+        => SettingsManager.ToggleSound(e.newValue);
+    
+    private void LowPowerToggle(ChangeEvent<bool> e)
+        => SettingsManager.ToggleLowPowerMode(e.newValue);
 
     
     
@@ -145,11 +155,6 @@ public class UIController : MonoBehaviour
     //
     //Settings Toggle Handlers
     //
-    private void SoundToggled(ChangeEvent<bool> e)
-    {
-        PlayerPrefs.SetInt("SoundEnabled", Convert.ToInt32(e.newValue));
-        AudioListener.pause = !e.newValue;
-    }
 
     //
     //Methods
