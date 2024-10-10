@@ -36,6 +36,8 @@ public class GameController : MonoBehaviour
         HighScore = PlayerPrefs.GetInt("HighScore", 0);
         
         PlayerController.FirstFlap += () => Application.targetFrameRate = 60;
+
+        CurrentGameState = GameState.Menu;
     }
 
     

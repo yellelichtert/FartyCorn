@@ -1,0 +1,11 @@
+.IconButton {
+    -unity-background-scale-mode: scale-to-fit;
+    flex-shrink: 0;
+    width: 15%;
+    height: 80%;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}

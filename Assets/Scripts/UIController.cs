@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Enums;
 using Unity.Mathematics;
 using UnityEngine;
@@ -7,19 +8,32 @@ using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField] private Texture2D tapToStartSprite;
     
-    public static UIController Instance;
-
+    private GameController _gameController;
+    
     private VisualElement _uiRoot;
+    
     private VisualElement _mainMenu;
+    private VisualElement _settings;
+    private VisualElement _upgrades;
+    
+    
+    private VisualElement _gameOver;
+    private VisualElement _share;
+
+    private VisualElement _currentMenu;
+    private VisualElement _currentSubMenu;
+    
     
     void Awake()
     {
-        Instance = this;
-        
+        _gameController = GameController.Instance;
         _uiRoot = GetComponent<UIDocument>().rootVisualElement;
+        
+        
         _mainMenu = _uiRoot.Q<VisualElement>("MainMenu");
+        _settings = _uiRoot.Q<VisualElement>("Settings");
+        _upgrades = _uiRoot.Q<VisualElement>("Upgrades");
         
         Button playButton = _uiRoot.Q<Button>("PlayButton");
         playButton.clicked += PlayButtonOnClicked;
@@ -27,52 +41,119 @@ public class UIController : MonoBehaviour
         Button settingsButton = _uiRoot.Q<Button>("SettingsButton");
         settingsButton.clicked += SettingsButtonOnclicked;
         
-        Button upgradesButton = _uiRoot.Q<Button>("UpgradeButton");
-        upgradesButton.clicked += UpgradesButtonOnonClick;
+        Button upgradesButton = _uiRoot.Q<Button>("UpgradesButton");
+        upgradesButton.clicked += UpgradesButtonOnClick;
+        
+        _settings.visible = false;
+        _upgrades.visible = false;
+        
+        _currentMenu = _mainMenu;
+        
+        
+        
+        _gameOver = _uiRoot.Q<VisualElement>("GameOver");
+        _share = _uiRoot.Q<VisualElement>("Share");
+        
+        Button playAgainButton = _uiRoot.Q<Button>("PlayAgainButton");
+        playAgainButton.clicked += PlayButtonOnClicked;
+        
+        Button menuButton = _uiRoot.Q<Button>("MenuButton");
+        menuButton.clicked += MenuButtonOnClicked;
+        
+        Button shareButton = _uiRoot.Q<Button>("ShareButton");
+        shareButton.clicked += ShareButtonOnclicked;
+
+        _gameOver.visible = false;
+        _share.visible = false;
+        
+        
+        _uiRoot.Query<Button>(name: "BackButton")
+            .ForEach((backButton) =>
+            {
+                backButton.clicked += BackButtonOnclicked;
+            });
         
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         GameController.ScoreChanged += GameControllerOnScoreChanged;
         GameController.HighScoreChanged += GameControllerOnHighScoreChanged;
     }
     
-    private void GameControllerOnHighScoreChanged(int newHighScore)
-    {
-        
-    }
+    
+    //
+    //Button Handlers    
+    //
+    private void MenuButtonOnClicked()
+        => _gameController.CurrentGameState = GameState.Menu;
+   
+    private void PlayButtonOnClicked()
+        => _gameController.CurrentGameState = GameState.Playing;
+    
+    private void SettingsButtonOnclicked()
+        => OpenSubMenu(_settings);
+    
+    private void UpgradesButtonOnClick()
+        => OpenSubMenu(_upgrades);
 
-    private void GameControllerOnScoreChanged(int newScore)
-    {
-        
-    }
+    private void ShareButtonOnclicked()
+        => OpenSubMenu(_share);
+    
+    private void BackButtonOnclicked()
+        => CloseSubMenu(); 
 
+    
+    
+    //
+    // Manages Ui changes
+    //
     private void GameControllerOnGameStateChanged(GameState newState)
     {
+        _currentMenu.visible = false;
+        
         switch (newState)
         {
             case GameState.Menu:
-                _mainMenu.visible = true;
+                _currentMenu = _mainMenu;
                break;
-            case GameState.Playing:
-                _mainMenu.visible = false;
-              break;
             case GameState.GameOver:
-                _mainMenu.visible = true; //Temporary untill gameover screen is done.
+                _currentMenu = _gameOver;
                 break;
         }
+        
+        _currentMenu.visible = newState != GameState.Playing;
     }
 
-    private void PlayButtonOnClicked()
+
+    //
+    //Methods
+    //
+    private void OpenSubMenu(VisualElement subMenu)
     {
-        GameController.Instance.CurrentGameState = GameState.Playing;
+        _currentSubMenu = subMenu;
+        
+        _mainMenu.visible = false;
+        _currentSubMenu.visible = true;
+    }
+
+    
+    private void CloseSubMenu()
+    {
+        _currentSubMenu.visible = false;
+        _mainMenu.visible = true;
     }
     
-    private void SettingsButtonOnclicked()
+    
+    //
+    //Game Events
+    //
+    private void GameControllerOnHighScoreChanged(int newHighScore)
     {
-        throw new NotImplementedException();
+    }
+
+
+    private void GameControllerOnScoreChanged(int newScore)
+    {
     }
     
-    private void UpgradesButtonOnonClick()
-    {
-        throw new NotImplementedException();
-    }
+
+    
 }
