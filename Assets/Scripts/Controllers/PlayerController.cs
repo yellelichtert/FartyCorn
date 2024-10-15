@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource _flapSound;
     private Rigidbody2D _rb;
     private SpriteRenderer _renderer;
+    private Animator _animator;
     private bool _firstFlap = true;
     
     
@@ -31,6 +32,10 @@ public class PlayerController : MonoBehaviour
      
         _rb = GetComponent<Rigidbody2D>();
         _renderer = GetComponent<SpriteRenderer>();
+        
+        _animator = gameObject.GetComponent<Animator>();
+        _animator.enabled = false;
+            
         
         GameController.DirectionChanged += GameControllerOnDirectionChanged;
     }
@@ -91,8 +96,6 @@ public class PlayerController : MonoBehaviour
         transform.position = newGameDirection == GameDirection.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
         _renderer.flipX = newGameDirection == GameDirection.Left;
     }
-
-    
     
     private void OnDestroy()
     {

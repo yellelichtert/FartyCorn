@@ -11,7 +11,6 @@ namespace Collectables
         private PowerUpBase _powerUp; 
         
         
-        
         protected override void Start()
         {
             base.Start();
@@ -38,7 +37,7 @@ namespace Collectables
             }
             else
             {
-                
+                currentPowerUp.ResetPowerUp();   
             }
         }
     }

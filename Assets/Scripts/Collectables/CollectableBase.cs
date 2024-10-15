@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Collectables
 {
-    public class CollectableBase : MonoBehaviour
+    public abstract class CollectableBase : MonoBehaviour
     {
         
         private AudioSource _collectSound;

@@ -1,46 +1,64 @@
 
+using System;
 using System.Collections;
+using UIElements;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 namespace PowerUps
 {
     public class JetPackPowerUp : PowerUpBase
     {
-        private float _duration;
-        private float _jetpackPower;
-        
-        private bool _holding;
+        private readonly float _powerUpDuration = 150;
+        private readonly float _jetpackPower = 20;
+
+
+
         private Rigidbody2D _rb;
         private AudioSource _audio;
-        private InputAction _moveAction;
-        private GameObject _thrustPrefab;
-        private ProgressBar _progressBar;
+        private FuelBar _fuelBar;
+        private Animator _animator;
+        private AudioSource _audioSource;
+        private SpriteRenderer _spriteRenderer;
+        
+        
+        private UIController _ui;
+        private PlayerController _player;
 
-        private void Start()
+        private float _fuel;
+        private bool _holding;
+
+        private void Awake()
         {
-            _jetpackPower = 20;
-            ResetDuration();
+            _rb = GetComponent<Rigidbody2D>();
 
             _audio = gameObject.AddComponent<AudioSource>();
             _audio.clip = Resources.Load<AudioClip>("Audio/LongFart");
-            
-            _thrustPrefab = Resources.Load<GameObject>("Prefabs/Thrust");
-            
-            _rb = GetComponent<Rigidbody2D>();
 
-
-            _progressBar = new ProgressBar()
-            {
-                title = "Fuel",
-                lowValue = 0f,
-                highValue = _duration,
-                value = _duration
-            };
-            _progressBar.visible = true;
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             
+            _fuelBar = new FuelBar(_powerUpDuration);
+
+            _animator = GetComponent<Animator>();
+            
+            _audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSource.playOnAwake = false;
+            _audioSource.clip = Resources.Load<AudioClip>("Audio/Jetpack");
+            _audioSource.loop = true;
+
+            _ui = UIController.Instance;
         }
+
+
+        private void Start()
+        {
+            _fuel = _powerUpDuration;
+            _fuelBar.CurrentFuel = _fuel;
+            
+            _ui.AddPowerUpElement(_fuelBar);
+            
+            AddPowerUp();
+        }
+        
 
         private void Update()
         {
@@ -56,39 +74,59 @@ namespace PowerUps
                 }
             }
         }
-        
-        
+
+
         private void FixedUpdate()
         {
             if (_holding)
             {
+                if (!_animator.enabled)
+                {
+                    _audioSource.Play();
+                    _animator.enabled = true;
+                    _animator.SetBool("Holding", _holding);
+                }
+
+
                 _rb.AddForce(Vector2.up * _jetpackPower, ForceMode2D.Force);
-                _duration--;
-                StartCoroutine(Thrust());
-                
+                _fuel--;
+                _fuelBar.CurrentFuel = _fuel;
+
+
                 if (!_audio.isPlaying) _audio.Play();
-                if (_duration <= 0) Destroy(this);
+                if (_fuel <= 0)
+                {
+                    _ui.RemovePowerUpElement();
+                    //_player.RemovePowerUp();
+
+                    Destroy(_audioSource);
+                    RemovePowerUp();
+                }
             }
-            else if (_audio.isPlaying)
+            else if (!_holding)
             {
+                _audioSource.Stop();
+                _animator.enabled = false;
+                _animator.SetBool("Holding", _holding);
                 _audio.Stop();
             }
         }
         
         
-        public void ResetDuration() => _duration = 1000;
         
+        public override void ResetPowerUp() => _fuel = _powerUpDuration;
         
-        //Expensive and copy of already existing methods
-        //Needs to be removed when refacoring!
-        private IEnumerator Thrust()
+        private void AddPowerUp()
         {
-            var thrust = Instantiate(_thrustPrefab, new Vector2(transform.position.x+0.1f, transform.position.y-0.5f), Quaternion.identity);
+            _spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Player/Jetpack");
+        }
         
-            var animationLength = thrust.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length;
-        
-            yield return new WaitForSeconds(animationLength);
-            Destroy(thrust.gameObject);
+        private void RemovePowerUp()
+        {
+            _spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Player/Default");
+            _animator.enabled = false;
+            
+            Destroy(this);
         }
     }
 }

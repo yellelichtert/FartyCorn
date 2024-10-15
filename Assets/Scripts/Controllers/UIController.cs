@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Enums;
+using JetBrains.Annotations;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -8,6 +9,7 @@ using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
 {
+    public static UIController Instance;
     
     private GameController _gameController;
     
@@ -20,15 +22,21 @@ public class UIController : MonoBehaviour
     
     private VisualElement _gameOver;
     private VisualElement _share;
-
+    
+    
     private VisualElement _currentMenu;
     private VisualElement _currentSubMenu;
-
+    
     private Label _gameScore;
     private Label _highScore;
     
+
+    [CanBeNull] private VisualElement _powerUp;
+    
     void Awake()
     {
+        Instance = this;
+        
         _gameController = GameController.Instance;
         _uiRoot = GetComponent<UIDocument>().rootVisualElement;
         
@@ -89,6 +97,7 @@ public class UIController : MonoBehaviour
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         GameController.ScoreChanged += GameControllerOnScoreChanged;
         GameController.HighScoreChanged += GameControllerOnHighScoreChanged;
+        
     }
     
     
@@ -146,16 +155,14 @@ public class UIController : MonoBehaviour
                break;
             case GameState.GameOver:
                 _currentMenu = _gameOver;
+                if (_powerUp != null) RemovePowerUpElement();
                 break;
         }
         
         _currentMenu.visible = newState != GameState.Playing;
     }
-
-    //
-    //Settings Toggle Handlers
-    //
-
+    
+    
     //
     //Methods
     //
@@ -172,6 +179,18 @@ public class UIController : MonoBehaviour
     {
         _currentSubMenu.visible = false;
         _currentMenu.visible = true;
+    }
+
+    public void AddPowerUpElement(VisualElement powerUpElement)
+    {
+        _uiRoot.Add(powerUpElement);
+        _powerUp = powerUpElement;
+    }
+
+    public void RemovePowerUpElement()
+    {
+        _uiRoot.Remove(_powerUp);
+        _powerUp = null;
     }
     
 }

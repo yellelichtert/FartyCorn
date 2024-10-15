@@ -7,7 +7,7 @@ public class ObjectController : MonoBehaviour
     
     private void Start()
     {
-        _destroyLocation = -transform.position.x-1;
+        _destroyLocation = -transform.position.x-1; 
     }
     
     private void FixedUpdate()

@@ -1,5 +1,6 @@
 using System;
 using Enums;
+using Spawners;
 using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -25,7 +26,7 @@ namespace Obstacles
         
         public void Start()
         {
-            _moveSpeed = ObstacleManager.Instance.MoveSpeed;
+            _moveSpeed = ObstacleSpawners.Instance.MoveSpeed;
             _startLocation = transform.position.x;
         
             _movementDirection = GameController.Instance.CurrentGameDirection == GameDirection.Left 
@@ -34,7 +35,7 @@ namespace Obstacles
             
             transform.position = new Vector2(_startLocation, GetRandomHeight());
             
-            var randomCollectable = ObstacleManager.Instance.GetRandomCollectable();
+            var randomCollectable = ObstacleSpawners.Instance.GetRandomCollectable();
             var collectables = GameObject.FindGameObjectsWithTag("Collectable");
             
             foreach (var collectable in collectables)

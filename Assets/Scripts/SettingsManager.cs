@@ -10,8 +10,6 @@ public static class SettingsManager
         AudioListener.pause = !IsSoundEnabled();
     }
     
-
-    
     public static bool IsSoundEnabled() =>  PlayerPrefs.GetInt("isSoundEnabled", 1) == 1;
     public static void ToggleSound(bool isEnabled)
     {

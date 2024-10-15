@@ -513,7 +513,7 @@ MonoBehaviour:
   specialCollectables:
   - {fileID: 3807319144912723364, guid: eeaecea5651bb4f83a48d5b134cfd3b8, type: 3}
   - {fileID: 2749522468040441005, guid: b161814b7d0194e308ac7011531c8745, type: 3}
-  specialCollectablePropability: 10
+  specialCollectablePropability: 100
 --- !u!1 &2120262415
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,13 +575,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915e8a91b14b944ceaec7d94c5608e90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tapToStartSprite: {fileID: 2800000, guid: 09c1a8cf649bc45a99b2eda6890ffae5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
-  - {fileID: 619394802}
   - {fileID: 1714304298}
   - {fileID: 2120262417}
   - {fileID: 1423180986}
+  - {fileID: 619394802}
