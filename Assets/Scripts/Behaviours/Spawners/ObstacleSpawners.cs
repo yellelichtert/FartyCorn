@@ -38,7 +38,7 @@ namespace Spawners
             _availableObstacles = _availableObstacles = obstacles.Where(o => o.difficulty <= _currentDifficulty).ToList();
         
         
-            PlayerController.FirstFlap += SpawnObstacle;
+            PlayerController.FirstTap += SpawnObstacle;
             GameController.ScoreChanged += GameControllerOnScoreChanged;
             GameController.GameStateChanged += GameControllerOnGameStateChanged;
             GameController.DirectionChanged += GameControllerOnDirectionChanged;

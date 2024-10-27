@@ -16,37 +16,32 @@ namespace Managers
         public static List<PowerUp> PowerUps { get;}
         private static int _coinsCollected;
 
-        private readonly static string _directoryPath = Path.Combine(Application.persistentDataPath, DataFiles.FolderName);
-        private readonly static string _filePath = Path.Combine(Application.persistentDataPath, DataFiles.PowerUps);
+        private static readonly string DirectoryPath = Path.Combine(Application.persistentDataPath, DataFiles.FolderName);
+        private static readonly string FilePath = Path.Combine(Application.persistentDataPath, DataFiles.PowerUps);
         
          static PowerUpManager()
          {
+             _coinsCollected = PlayerPrefs.GetInt(PlayerPrefKeys.CoinsCollected, 0);
+             
              string json;
-             if (!File.Exists(_filePath))
+             if (!File.Exists(FilePath))
              {
-                 Debug.Log("File Doesn't Exist, creating a new one");
-                 
-                 Debug.Log("Loading From Resources");
                  json = Resources.Load<TextAsset>(DataFiles.PowerUps.Replace(".json", "")).text;
 
                  
-                 if (!Directory.Exists(_directoryPath))
+                 if (!Directory.Exists(DirectoryPath))
                  {
-                     Debug.Log("Creating folder");
-                     Directory.CreateDirectory(_directoryPath); //  ?/
+                     Directory.CreateDirectory(DirectoryPath); 
                  }
                  
                  
-                 Debug.Log("Creating file at: " + _filePath);
-                 File.Create(_filePath).Close();
+                 File.Create(FilePath).Close();
+                 File.WriteAllText(Path.Combine(FilePath), json);
                  
-                 Debug.Log("Writing file");
-                 File.WriteAllText(Path.Combine(_filePath), json);
              }
              else
              {
-                 Debug.Log("File exists, Loading file");
-                 json = File.ReadAllText(_filePath);
+                 json = File.ReadAllText(FilePath);
              }
              
              PowerUps = JsonConvert
@@ -77,7 +72,7 @@ namespace Managers
         {
             CoinsCollected -= GetUpgradeCost(powerUp);
             powerUp.CurrentLevel++;
-            File.WriteAllText("FilePath", JsonConvert.SerializeObject(PowerUps));
+            File.WriteAllText(FilePath, JsonConvert.SerializeObject(PowerUps));
         }
     }
 }

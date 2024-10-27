@@ -1,6 +1,7 @@
 using System;
 using Enums;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class GameController : MonoBehaviour
@@ -9,7 +10,7 @@ public class GameController : MonoBehaviour
     private void Awake() => Instance = this;
     
     
-    [SerializeField] private GameObject background;
+    [FormerlySerializedAs("background")] [SerializeField] private GameObject SkyColor;
     
     private int _highScore = 0;
     private int _currentScore;
@@ -28,8 +29,8 @@ public class GameController : MonoBehaviour
     {
         Application.targetFrameRate = 15;
         
-        Instantiate(background);
-        background.transform.localScale = new Vector2(Screen.width, Screen.height);
+        Instantiate(SkyColor);
+        SkyColor.transform.localScale = new Vector2(Screen.width, Screen.height);
         
         HighScore = PlayerPrefs.GetInt("HighScore", 0);
 

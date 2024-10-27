@@ -18,11 +18,11 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;
     private SpriteRenderer _renderer;
     private Animator _animator;
-    private bool _firstFlap = true;
+    private bool _firstTap = true;
     
     
     
-    public static event Action FirstFlap;
+    public static event Action FirstTap;
     
 
     
@@ -61,10 +61,10 @@ public class PlayerController : MonoBehaviour
     { 
         if (GetComponent<PowerUpBehaviour>()) return;
         
-        if (_firstFlap)
+        if (_firstTap)
         {
-            _firstFlap = false;
-            FirstFlap?.Invoke();
+            _firstTap = false;
+            FirstTap?.Invoke();
             _rb.simulated = true;
         }
         

@@ -11,7 +11,8 @@ public static class ResourcePaths
 	public const string CollectableSprites = "Collectables/Sprites/";
 	public const string CollectableAudio = "Collectables/Audio/";
 	public const string Prefabs = "Prefabs/";
-		
+	public const string Background = Prefabs +  "Background_Sprite";
+
 }
 
 public static class PlayerDefaults
