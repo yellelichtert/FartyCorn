@@ -1,3 +1,5 @@
+using Managers;
+using Model;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -5,40 +7,74 @@ namespace UIElements
 {
     public class UpgradeBar : VisualElement
     {
-        private readonly int _upgradeLevels;
-        private readonly string _upgradeName;
-        private readonly float _upgradeCost;
+        private PowerUp _powerUp;
+        private readonly Button _upgradeButton;
         
-        private int _currentUpgradeLevel;
-
-        public UpgradeBar(string upgradeName, int upgradeLevels, float upgradeCost)
+        public UpgradeBar(PowerUp powerUp, VisualElement parent)
         {
+            _powerUp = powerUp;
             generateVisualContent += GenerateVisualContent;
             
-            _upgradeName = upgradeName;
-            _upgradeLevels = upgradeLevels;
-            _upgradeCost = upgradeCost;
+            style.flexDirection = FlexDirection.Row;
+            style.flexGrow = 0;
+            style.flexShrink = 0;
+            style.visibility = parent.style.visibility;
+            style.width = Length.Percent(100);
+            style.height = Length.Percent(30);
+
+            _upgradeButton = new Button();
+            _upgradeButton.text = "+";
+            _upgradeButton.clicked += UpgradeButtonOnClicked;
+            _upgradeButton.style.width = Length.Percent(10);
+            _upgradeButton.style.left = Length.Percent(85);
+            _upgradeButton.style.height = Length.Percent(50);
+            _upgradeButton.style.top = Length.Percent(50);
+            _upgradeButton.style.fontSize = Length.Percent(100);
+            Add(_upgradeButton);
         }
 
+        private void UpgradeButtonOnClicked()
+        {
+            PowerUpManager.Upgrade(_powerUp);
+            MarkDirtyRepaint();
+        }
 
         private void GenerateVisualContent(MeshGenerationContext context)
         {
-            float width = contentRect.width;
-            float height = contentRect.height;
+            var currentUpgradeCost = PowerUpManager.GetUpgradeCost(_powerUp);
+            _upgradeButton.SetEnabled(
+                currentUpgradeCost <= PowerUpManager.CoinsCollected && _powerUp.CurrentLevel < _powerUp.UpgradeLevels
+                );
+           
             
-            context.DrawText(_upgradeName, new Vector2(contentRect.xMin, contentRect.yMin), 30, Color.white);
+            context.DrawText(_powerUp.Name, new Vector2(0, 0), 40, Color.black);
+            context.DrawText($"Cost: {currentUpgradeCost}", new Vector2(contentRect.width * 0.8f, 0),40, Color.black);
+            
+            float height = contentRect.height;
+            float spacing = (contentRect.width * 0.8f) / _powerUp.UpgradeLevels;
             
             var painter = context.painter2D;
-            
             painter.lineWidth = 4;
-            painter.fillColor = Color.black;
+            painter.strokeColor = Color.black;
             
-            //Draw full bar
-            painter.MoveTo(new Vector2(0,0));
-            painter.LineTo(new Vector2(1,0));
-            painter.LineTo(new Vector2(1,1));
-            painter.LineTo(new Vector2(0,1));
             
+            for (int i = 0; i < _powerUp.UpgradeLevels; i++)
+            {
+                painter.fillColor =  i >= _powerUp.CurrentLevel ? Color.gray : Color.green;
+                
+                painter.BeginPath();
+                
+                painter.MoveTo(new Vector2(spacing*i, height/2));
+                painter.LineTo(new Vector2(spacing*(i+1), height/2));
+                painter.LineTo(new Vector2(spacing * (i + 1), height));
+                painter.LineTo(new Vector2(spacing * i, height));
+                painter.LineTo(new Vector2(spacing * i, height/2));
+
+                painter.ClosePath();
+                
+                painter.Fill();
+                painter.Stroke();
+            }
         }
     }
 }

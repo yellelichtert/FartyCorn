@@ -38,7 +38,7 @@ namespace UIElements
             painter.lineWidth = 4f;
             painter.fillColor = Color.gray;
             
-            //Draz grey bar
+            //Draw backround grey bar
             painter.BeginPath();
             painter.MoveTo(new Vector2(0, 0));
             

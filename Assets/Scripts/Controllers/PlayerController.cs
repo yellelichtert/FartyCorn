@@ -1,17 +1,20 @@
 using System;
 using System.Collections;
+using Behaviours.PowerUps;
 using Enums;
-using PowerUps;
+using Model;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-     
+    
+    
     [SerializeField] private float flapForce;
     
     private GameObject _thrustPrefab;
-    private AudioSource _flapSound;
+    private AudioSource _audio;
     private Rigidbody2D _rb;
     private SpriteRenderer _renderer;
     private Animator _animator;
@@ -21,27 +24,28 @@ public class PlayerController : MonoBehaviour
     
     public static event Action FirstFlap;
     
+
     
-    
+
     private void Start()
     {
-        _flapSound = gameObject.AddComponent<AudioSource>();
-        _flapSound.clip = Resources.Load<AudioClip>("Audio/Fart");
-        
-        _thrustPrefab = Resources.Load<GameObject>("Prefabs/Thrust");
-     
+        _audio = gameObject.AddComponent<AudioSource>();
         _rb = GetComponent<Rigidbody2D>();
         _renderer = GetComponent<SpriteRenderer>();
-        
         _animator = gameObject.GetComponent<Animator>();
-        _animator.enabled = false;
-            
         
-        GameController.DirectionChanged += GameControllerOnDirectionChanged;
+        _thrustPrefab = Resources.Load<GameObject>("Prefabs/Thrust");
+        
+        SetToDefault();
+
+        PowerUpBehaviour.PowerUpAdded += OnPowerUpAdded;
+        PowerUpBehaviour.PowerUpRemoved += SetToDefault;
+        
+        GameController.DirectionChanged += OnDirectionChanged;
     }
 
-
     
+
     private void Update()
     {
         if (Input.touchCount > 0)
@@ -55,7 +59,7 @@ public class PlayerController : MonoBehaviour
     
     private void Flap()
     { 
-        if (GetComponent<JetPackPowerUp>()) return;
+        if (GetComponent<PowerUpBehaviour>()) return;
         
         if (_firstFlap)
         {
@@ -64,7 +68,7 @@ public class PlayerController : MonoBehaviour
             _rb.simulated = true;
         }
         
-        _flapSound.Play();
+        _audio.Play();
         _rb.AddForce(Vector2.up * flapForce, ForceMode2D.Impulse);
         StartCoroutine(Thrust());
     }
@@ -91,7 +95,7 @@ public class PlayerController : MonoBehaviour
     
     
     
-    private void GameControllerOnDirectionChanged(GameDirection newGameDirection)
+    private void OnDirectionChanged(GameDirection newGameDirection)
     {
         transform.position = newGameDirection == GameDirection.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
         _renderer.flipX = newGameDirection == GameDirection.Left;
@@ -99,7 +103,25 @@ public class PlayerController : MonoBehaviour
     
     private void OnDestroy()
     {
-        GameController.DirectionChanged -= GameControllerOnDirectionChanged;
+        GameController.DirectionChanged -= OnDirectionChanged;
+        
+        PowerUpBehaviour.PowerUpAdded -= OnPowerUpAdded;
+        PowerUpBehaviour.PowerUpRemoved -= SetToDefault;
+    }
+
+    private void OnPowerUpAdded(PowerUp powerUp, VisualElement UiElement)
+    {
+        _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + powerUp.Name);
+        _animator.enabled = true;
     }
     
+    private void SetToDefault()
+    {
+        var fileName = "Default";
+        
+        _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + fileName);
+        _audio.clip = Resources.Load<AudioClip>(ResourcePaths.PlayerAudio + fileName);
+        
+        _animator.enabled = false;
+    }
 }

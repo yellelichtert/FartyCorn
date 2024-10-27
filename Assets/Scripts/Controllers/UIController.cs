@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Behaviours.PowerUps;
 using Enums;
 using JetBrains.Annotations;
+using Managers;
+using Model;
+using UIElements;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -21,7 +26,7 @@ public class UIController : MonoBehaviour
     
     
     private VisualElement _gameOver;
-    private VisualElement _share;
+    private VisualElement _share; 
     
     
     private VisualElement _currentMenu;
@@ -31,7 +36,8 @@ public class UIController : MonoBehaviour
     private Label _highScore;
     
 
-    [CanBeNull] private VisualElement _powerUp;
+    [CanBeNull] private VisualElement _powerUpElement;
+    
     
     void Awake()
     {
@@ -94,13 +100,37 @@ public class UIController : MonoBehaviour
         lowPowerModeToggle.value = SettingsManager.IsLowPowerMode();
         lowPowerModeToggle.RegisterValueChangedCallback(LowPowerToggle);
         
+        
+        VisualElement upgradebars =_uiRoot.Query<VisualElement>(name: "UpgradeBars");
+
+        Label totalCoins = new()
+        {
+            text = $"Total Coins: {PowerUpManager.CoinsCollected}"
+        };
+        totalCoins.style.fontSize = 40;
+        
+        upgradebars.Add(totalCoins);
+        
+        foreach (var powerUp in PowerUpManager.PowerUps)
+        {
+            if (powerUp.UpgradeLevels == 0) continue;
+            upgradebars.Add(new UpgradeBar(powerUp, upgradebars));
+        }
+        
+        
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         GameController.ScoreChanged += GameControllerOnScoreChanged;
         GameController.HighScoreChanged += GameControllerOnHighScoreChanged;
         
+        PowerUpBehaviour.PowerUpAdded += OnPowerUpAdded;
+        PowerUpBehaviour.PowerUpRemoved += RemovePowerUpElement;
+        
+        PowerUpManager.CollectedCoinsChanged += () => totalCoins.text = $"Total Coins: {PowerUpManager.CoinsCollected}";
     }
-    
-    
+
+
+
+
     //
     //Button Handlers    
     //
@@ -155,7 +185,7 @@ public class UIController : MonoBehaviour
                break;
             case GameState.GameOver:
                 _currentMenu = _gameOver;
-                if (_powerUp != null) RemovePowerUpElement();
+                if (_powerUpElement != null) RemovePowerUpElement();
                 break;
         }
         
@@ -170,6 +200,7 @@ public class UIController : MonoBehaviour
     {
         _currentSubMenu = subMenu;
         
+        
         _currentMenu.visible = false;
         _currentSubMenu.visible = true;
     }
@@ -181,16 +212,19 @@ public class UIController : MonoBehaviour
         _currentMenu.visible = true;
     }
 
-    public void AddPowerUpElement(VisualElement powerUpElement)
+    private void OnPowerUpAdded(PowerUp x, VisualElement uiElement)
     {
-        _uiRoot.Add(powerUpElement);
-        _powerUp = powerUpElement;
+        _powerUpElement = uiElement;
+        _uiRoot.Add(_powerUpElement);
     }
 
-    public void RemovePowerUpElement()
+
+    private void RemovePowerUpElement()
     {
-        _uiRoot.Remove(_powerUp);
-        _powerUp = null;
+        if (_powerUpElement != null)
+        {
+            _uiRoot.Remove(_powerUpElement);
+            _powerUpElement = null;
+        }
     }
-    
 }
