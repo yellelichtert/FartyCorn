@@ -101,7 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3048b57c6f6074d609d5af3b50af4802, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flapForce: 5
+  tapForce: 5
+  thrustPrefab: {fileID: 2894106392469271184, guid: 0ff6ac0ebed2f4eb28ca100d49a8b822, type: 3}
 --- !u!50 &6322762997297281030
 Rigidbody2D:
   serializedVersion: 4

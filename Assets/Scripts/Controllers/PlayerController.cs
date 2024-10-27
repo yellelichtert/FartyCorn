@@ -5,123 +5,126 @@ using Enums;
 using Model;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
-public class PlayerController : MonoBehaviour
+namespace Controllers
 {
-    
-    
-    [SerializeField] private float flapForce;
-    
-    private GameObject _thrustPrefab;
-    private AudioSource _audio;
-    private Rigidbody2D _rb;
-    private SpriteRenderer _renderer;
-    private Animator _animator;
-    private bool _firstTap = true;
-    
-    
-    
-    public static event Action FirstTap;
-    
-
-    
-
-    private void Start()
+    public class PlayerController : MonoBehaviour
     {
-        _audio = gameObject.AddComponent<AudioSource>();
-        _rb = GetComponent<Rigidbody2D>();
-        _renderer = GetComponent<SpriteRenderer>();
-        _animator = gameObject.GetComponent<Animator>();
-        
-        _thrustPrefab = Resources.Load<GameObject>("Prefabs/Thrust");
-        
-        SetToDefault();
-
-        PowerUpBehaviour.PowerUpAdded += OnPowerUpAdded;
-        PowerUpBehaviour.PowerUpRemoved += SetToDefault;
-        
-        GameController.DirectionChanged += OnDirectionChanged;
-    }
+    
+    
+        [SerializeField] private float tapForce;
+        [SerializeField] private GameObject thrustPrefab;
+    
+        private AudioSource _audio;
+        private Rigidbody2D _rb;
+        private SpriteRenderer _renderer;
+        private Animator _animator;
+        private bool _firstTap = true;
+    
+    
+    
+        public static event Action FirstTap;
+    
 
     
 
-    private void Update()
-    {
-        if (Input.touchCount > 0)
+        private void Start()
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
-                Flap();
+            _audio = gameObject.AddComponent<AudioSource>();
+            _rb = GetComponent<Rigidbody2D>();
+            _renderer = GetComponent<SpriteRenderer>();
+            _animator = gameObject.GetComponent<Animator>();
+        
+            SetToDefault();
+
+            PowerUpBehaviour.PowerUpAdded += OnPowerUpAdded;
+            PowerUpBehaviour.PowerUpRemoved += SetToDefault;
+        
+            GameController.DirectionChanged += OnDirectionChanged;
         }
-    }
 
     
-    
-    private void Flap()
-    { 
-        if (GetComponent<PowerUpBehaviour>()) return;
-        
-        if (_firstTap)
+
+        private void Update()
         {
-            _firstTap = false;
-            FirstTap?.Invoke();
-            _rb.simulated = true;
+            if (Input.touchCount > 0)
+            {
+                if (Input.GetTouch(0).phase == TouchPhase.Began)
+                    Flap();
+            }
         }
-        
-        _audio.Play();
-        _rb.AddForce(Vector2.up * flapForce, ForceMode2D.Impulse);
-        StartCoroutine(Thrust());
-    }
-    
-    
-    
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Destroy(gameObject);
-        GameController.Instance.CurrentGameState = GameState.GameOver;
-    }
 
     
     
-    private IEnumerator Thrust()
-    {
-        var thrust = Instantiate(_thrustPrefab, new Vector2(transform.position.x+0.1f, transform.position.y-0.5f), Quaternion.identity);
+        private void Flap()
+        { 
+            if (GetComponent<PowerUpBehaviour>()) return;
         
-        var animationLength = thrust.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length;
         
-        yield return new WaitForSeconds(animationLength);
-        Destroy(thrust.gameObject);
-    }
-    
-    
-    
-    private void OnDirectionChanged(GameDirection newGameDirection)
-    {
-        transform.position = newGameDirection == GameDirection.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
-        _renderer.flipX = newGameDirection == GameDirection.Left;
-    }
-    
-    private void OnDestroy()
-    {
-        GameController.DirectionChanged -= OnDirectionChanged;
+            if (_firstTap)
+            {
+                _firstTap = false;
+                FirstTap?.Invoke();
+                _rb.simulated = true;
+            }
         
-        PowerUpBehaviour.PowerUpAdded -= OnPowerUpAdded;
-        PowerUpBehaviour.PowerUpRemoved -= SetToDefault;
-    }
+            _audio.Play();
+            _rb.AddForce(Vector2.up * tapForce, ForceMode2D.Impulse);
+            StartCoroutine(Thrust());
+        }
+    
+    
+    
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            Destroy(gameObject);
+            GameController.Instance.CurrentGameState = GameState.GameOver;
+        }
 
-    private void OnPowerUpAdded(PowerUp powerUp, VisualElement UiElement)
-    {
-        _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + powerUp.Name);
-        _animator.enabled = true;
-    }
     
-    private void SetToDefault()
-    {
-        var fileName = "Default";
+    
+        private IEnumerator Thrust()
+        {
+            var thrust = Instantiate(thrustPrefab, new Vector2(transform.position.x+0.1f, transform.position.y-0.5f), Quaternion.identity);
         
-        _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + fileName);
-        _audio.clip = Resources.Load<AudioClip>(ResourcePaths.PlayerAudio + fileName);
+            var animationLength = thrust.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length;
         
-        _animator.enabled = false;
+            yield return new WaitForSeconds(animationLength);
+            Destroy(thrust.gameObject);
+        }
+    
+    
+    
+        private void OnDirectionChanged(GameDirection newGameDirection)
+        {
+            transform.position = newGameDirection == GameDirection.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
+            _renderer.flipX = newGameDirection == GameDirection.Left;
+        }
+    
+        private void OnDestroy()
+        {
+            GameController.DirectionChanged -= OnDirectionChanged;
+        
+            PowerUpBehaviour.PowerUpAdded -= OnPowerUpAdded;
+            PowerUpBehaviour.PowerUpRemoved -= SetToDefault;
+        }
+
+        private void OnPowerUpAdded(PowerUp powerUp, VisualElement UiElement)
+        {
+            _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + powerUp.Name);
+            _animator.enabled = true;
+        }
+    
+        private void SetToDefault()
+        {
+            var fileName = "Default";
+        
+            _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + fileName);
+            _audio.clip = Resources.Load<AudioClip>(ResourcePaths.PlayerAudio + fileName);
+        
+            _animator.enabled = false;
+        }
     }
 }

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Controllers;
 using Enums;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Spawners
+namespace Behaviours.Spawners
 {
     public class ObjectSpawner : MonoBehaviour
     {
@@ -17,25 +18,25 @@ namespace Spawners
         [SerializeField] private float maxCloudInterval;
 
 
-        [SerializeField] private GameObject backgroundPrefab;
+        [SerializeField]private GameObject backgroundPrefab;
         [SerializeField] private float backgroundMoveSpeed;
+        
         private float _backgroundOffset;
         private List<ObjectController> _backgroundControllers = new();
         private GameObject _firstBackgroundObject;
         
         private Vector2 _screen;
         
+        
+        
         void Start()
         {
             _screen = Camera.main!.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-        
-            _firstBackgroundObject = Instantiate(backgroundPrefab,  new Vector3(8, -_screen.y * 0.57f, 20), Quaternion.identity);
-            
-            var objController = _firstBackgroundObject.GetComponent<ObjectController>();
-            objController.destroyLocation = (objController.destroyLocation / 2) + objController.destroyLocation;
-            _backgroundControllers.Add(objController);
-            
             _backgroundOffset = backgroundPrefab.GetComponent<SpriteRenderer>().sprite.bounds.size.x / 1.8f;
+            
+            
+            SpawnBackground();
+            
             
             GameController.GameStateChanged += GameControllerOnGameStateChanged;
             PlayerController.FirstTap += InvokeSpawnCloud;
@@ -45,16 +46,7 @@ namespace Spawners
 
         private void Update()
         {
-            if (_firstBackgroundObject.transform.position.x < -7f)
-            {
-                var obj = Instantiate(backgroundPrefab, new Vector3(_screen.x + _backgroundOffset, -_screen.y * 0.57f, 20), Quaternion.identity);
-                var objController = obj.GetComponent<ObjectController>();
-                objController.destroyLocation = _backgroundControllers[0].destroyLocation;
-                objController.moveSpeed = backgroundMoveSpeed;
-                
-                _backgroundControllers.Add(objController);
-                _firstBackgroundObject = obj;
-            }
+            if (_firstBackgroundObject.transform.position.x < -7f) SpawnBackground();
         }
         
     
@@ -72,8 +64,9 @@ namespace Spawners
             
             if (newState != GameState.Playing) SetBackgroundMoveSpeed(0);
         }
-
-
+        
+        
+        
         void SetBackgroundMoveSpeed(float moveSpeed)
         {
             for (var i = 0; i < _backgroundControllers.Count; i++)
@@ -81,6 +74,33 @@ namespace Spawners
                 _backgroundControllers[i].moveSpeed = moveSpeed; 
             }
         }
+
+
+        
+        void SpawnBackground()
+        {
+            bool isFirstSpawn = _firstBackgroundObject == null;
+                
+            
+            Vector3 spawnLocation = isFirstSpawn
+                ? new Vector3(8, -_screen.y * 0.57f, 20)
+                : new Vector3(_screen.x + _backgroundOffset, -_screen.y * 0.57f, 20);
+            
+            GameObject obj = Instantiate(backgroundPrefab, spawnLocation, Quaternion.identity);
+            
+            
+            ObjectController objController = obj.GetComponent<ObjectController>();
+            objController.moveSpeed = isFirstSpawn ? 0 : backgroundMoveSpeed;
+            
+            objController.destroyLocation = isFirstSpawn
+                ? (objController.destroyLocation / 2) + objController.destroyLocation
+                : _backgroundControllers[0].destroyLocation;
+            
+            
+            _backgroundControllers.Add(objController);
+            _firstBackgroundObject = obj;
+        }
+
         
     
         void SpawnCloud()

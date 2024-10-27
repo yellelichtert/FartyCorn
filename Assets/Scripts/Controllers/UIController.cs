@@ -26,15 +26,15 @@ public class UIController : MonoBehaviour
     
     
     private VisualElement _gameOver;
-    private VisualElement _share; 
+    private VisualElement _share;
     
     
     private VisualElement _currentMenu;
     private VisualElement _currentSubMenu;
     
-    private Label _gameScore;
+    private Label _inGameCurrentScore;
+    private Label _finishedGameScore;
     private Label _highScore;
-    
 
     [CanBeNull] private VisualElement _powerUpElement;
     
@@ -89,7 +89,12 @@ public class UIController : MonoBehaviour
         
         
         _highScore = _uiRoot.Q<Label>("HighScoreValue");
-        _gameScore = _uiRoot.Q<Label>("GameScoreValue");
+        _finishedGameScore = _uiRoot.Q<Label>("GameScoreValue");
+        
+        _inGameCurrentScore = _uiRoot.Q<Label>("InGameScore");
+
+        
+        _inGameCurrentScore.visible = false;
         
         
         Toggle soundToggle = _uiRoot.Q<Toggle>("SoundToggle");
@@ -165,9 +170,9 @@ public class UIController : MonoBehaviour
     //
     private void GameControllerOnHighScoreChanged(int newHighScore)
         => _highScore.text = newHighScore.ToString();
-    
+
     private void GameControllerOnScoreChanged(int newScore)
-        => _gameScore.text = newScore.ToString();
+        => _inGameCurrentScore.text = newScore.ToString();
     
     
     
@@ -184,12 +189,15 @@ public class UIController : MonoBehaviour
                 _currentMenu = _mainMenu;
                break;
             case GameState.GameOver:
+                _finishedGameScore.text = _inGameCurrentScore.text;
                 _currentMenu = _gameOver;
                 if (_powerUpElement != null) RemovePowerUpElement();
                 break;
         }
         
+        
         _currentMenu.visible = newState != GameState.Playing;
+        _inGameCurrentScore.visible = newState == GameState.Playing;
     }
     
     
