@@ -5,7 +5,6 @@ using Enums;
 using Model;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace Controllers
@@ -97,10 +96,10 @@ namespace Controllers
     
     
     
-        private void OnDirectionChanged(GameDirection newGameDirection)
+        private void OnDirectionChanged(Direction newDirection)
         {
-            transform.position = newGameDirection == GameDirection.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
-            _renderer.flipX = newGameDirection == GameDirection.Left;
+            transform.position = newDirection == Direction.Left ? new Vector2(math.abs(transform.position.x), transform.position.y) : new Vector2(-transform.position.x, transform.position.y);
+            _renderer.flipX = newDirection == Direction.Left;
         }
     
         private void OnDestroy()
@@ -111,9 +110,9 @@ namespace Controllers
             PowerUpBehaviour.PowerUpRemoved -= SetToDefault;
         }
 
-        private void OnPowerUpAdded(PowerUp powerUp, VisualElement UiElement)
+        private void OnPowerUpAdded(PowerUp powerUpData, VisualElement UiElement)
         {
-            _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + powerUp.Name);
+            _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + powerUpData.Name);
             _animator.enabled = true;
         }
     

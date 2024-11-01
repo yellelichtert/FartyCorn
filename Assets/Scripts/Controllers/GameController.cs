@@ -1,7 +1,7 @@
 using System;
 using Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
+
 
 
 public class GameController : MonoBehaviour
@@ -10,18 +10,15 @@ public class GameController : MonoBehaviour
     private void Awake() => Instance = this;
     
     
-    [FormerlySerializedAs("background")] [SerializeField] private GameObject SkyColor;
+    [SerializeField] private GameObject SkyColor;
     
-    private int _highScore = 0;
-    private int _currentScore;
+
     private GameState _currentGameState;
-    private GameDirection _currentGameDirection;
+    private Direction _currentDirection;
     
     
     public static event Action<GameState> GameStateChanged;
-    public static event Action<int> ScoreChanged;
-    public static event Action<int> HighScoreChanged;
-    public static event Action<GameDirection> DirectionChanged;
+    public static event Action<Direction> DirectionChanged;
 
     
     
@@ -32,7 +29,6 @@ public class GameController : MonoBehaviour
         Instantiate(SkyColor);
         SkyColor.transform.localScale = new Vector2(Screen.width, Screen.height);
         
-        HighScore = PlayerPrefs.GetInt("HighScore", 0);
 
         CurrentGameState = GameState.Menu;
         
@@ -41,34 +37,9 @@ public class GameController : MonoBehaviour
     }
 
     
-    public int CurrentScore
-    {
-        get => _currentScore;
-        set
-        {
-            _currentScore = value;
-            
-            if (value > HighScore) 
-                HighScore = value;
-            
-            ScoreChanged?.Invoke(value);
-        }
-    }
 
     
-    
-    private int HighScore
-    {
-        get => _highScore;
-        set
-        {
-            _highScore = value;
-            PlayerPrefs.SetInt("HighScore", value);
-            
-            HighScoreChanged?.Invoke(value);
-        }
-    }
-    
+
     
 
     public GameState CurrentGameState
@@ -80,8 +51,7 @@ public class GameController : MonoBehaviour
             
             if (_currentGameState == GameState.Playing)
             {
-                CurrentScore = 0;
-                CurrentGameDirection = GameDirection.Right;
+                CurrentDirection = Direction.Right;
             }
             else if (_currentGameState == GameState.GameOver)
             {
@@ -106,12 +76,12 @@ public class GameController : MonoBehaviour
     
     
     
-    public GameDirection CurrentGameDirection
+    public Direction CurrentDirection
     {
-        get => _currentGameDirection;
+        get => _currentDirection;
         set
         {
-            _currentGameDirection = value;
+            _currentDirection = value;
             DirectionChanged?.Invoke(value);
         }
     }

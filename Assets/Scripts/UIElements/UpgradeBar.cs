@@ -35,15 +35,15 @@ namespace UIElements
 
         private void UpgradeButtonOnClicked()
         {
-            PowerUpManager.Upgrade(_powerUp);
+            CollectableManager.Upgrade(_powerUp);
             MarkDirtyRepaint();
         }
 
         private void GenerateVisualContent(MeshGenerationContext context)
         {
-            var currentUpgradeCost = PowerUpManager.GetUpgradeCost(_powerUp);
+            var currentUpgradeCost = CollectableManager.GetUpgradeCost(_powerUp);
             _upgradeButton.SetEnabled(
-                currentUpgradeCost <= PowerUpManager.CoinsCollected && _powerUp.CurrentLevel < _powerUp.UpgradeLevels
+                currentUpgradeCost <= CollectableManager.CoinsCollected && _powerUp.CurrentLevel < _powerUp.UpgradeLevels
                 );
            
             

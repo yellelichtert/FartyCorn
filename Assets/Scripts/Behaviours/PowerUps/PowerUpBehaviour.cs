@@ -1,7 +1,4 @@
 using System;
-using System.Linq;
-using JetBrains.Annotations;
-using Managers;
 using Model;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,7 +7,7 @@ namespace Behaviours.PowerUps
 {
     public abstract class PowerUpBehaviour : MonoBehaviour
     {
-        protected PowerUp PowerUp { get; set; }
+        protected PowerUp PowerUpData { get; set; }
         protected abstract VisualElement UiElement { get; set; }
 
 
@@ -22,13 +19,13 @@ namespace Behaviours.PowerUps
         public abstract void ResetDuration(); 
         
 
-        protected void Start() => PowerUpAdded?.Invoke(PowerUp, UiElement);
+        protected void Start() => PowerUpAdded?.Invoke(PowerUpData, UiElement);
 
         
         
         protected void RemovePowerUp()
         {
-            PowerUpRemoved?.Invoke();
+            PowerUpRemoved?.Invoke(); 
             Destroy(this);
         }
         

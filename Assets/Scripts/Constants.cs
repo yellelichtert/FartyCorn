@@ -1,7 +1,6 @@
 public static class DataFiles
 {
 	public const string FolderName = "DataFiles/";
-	public const string PowerUps = FolderName + "PowerUps.json";
 }
 	
 public static class ResourcePaths

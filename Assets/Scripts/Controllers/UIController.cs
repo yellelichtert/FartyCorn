@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Behaviours.PowerUps;
 using Enums;
 using JetBrains.Annotations;
 using Managers;
 using Model;
 using UIElements;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
@@ -32,7 +27,7 @@ public class UIController : MonoBehaviour
     private VisualElement _currentMenu;
     private VisualElement _currentSubMenu;
     
-    private Label _inGameCurrentScore;
+    private GameScore _inGameCurrentScore;
     private Label _finishedGameScore;
     private Label _highScore;
 
@@ -89,12 +84,12 @@ public class UIController : MonoBehaviour
         
         
         _highScore = _uiRoot.Q<Label>("HighScoreValue");
+        _highScore.text = ScoreManager.HighScore.ToString();
+        
         _finishedGameScore = _uiRoot.Q<Label>("GameScoreValue");
-        
-        _inGameCurrentScore = _uiRoot.Q<Label>("InGameScore");
 
-        
-        _inGameCurrentScore.visible = false;
+        _inGameCurrentScore = new GameScore();
+        _uiRoot.Add(_inGameCurrentScore);
         
         
         Toggle soundToggle = _uiRoot.Q<Toggle>("SoundToggle");
@@ -110,13 +105,13 @@ public class UIController : MonoBehaviour
 
         Label totalCoins = new()
         {
-            text = $"Total Coins: {PowerUpManager.CoinsCollected}"
+            text = $"Total Coins: {CollectableManager.CoinsCollected}"
         };
         totalCoins.style.fontSize = 40;
         
         upgradebars.Add(totalCoins);
         
-        foreach (var powerUp in PowerUpManager.PowerUps)
+        foreach (var powerUp in CollectableManager.PowerUps)
         {
             if (powerUp.UpgradeLevels == 0) continue;
             upgradebars.Add(new UpgradeBar(powerUp, upgradebars));
@@ -124,16 +119,17 @@ public class UIController : MonoBehaviour
         
         
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
-        GameController.ScoreChanged += GameControllerOnScoreChanged;
-        GameController.HighScoreChanged += GameControllerOnHighScoreChanged;
+        
+        ScoreManager.HighScoreChanged += OnHighScoreChanged;
         
         PowerUpBehaviour.PowerUpAdded += OnPowerUpAdded;
         PowerUpBehaviour.PowerUpRemoved += RemovePowerUpElement;
         
-        PowerUpManager.CollectedCoinsChanged += () => totalCoins.text = $"Total Coins: {PowerUpManager.CoinsCollected}";
+        CollectableManager.CollectedCoinsChanged += () => totalCoins.text = $"Total Coins: {CollectableManager.CoinsCollected}";
     }
 
-
+    private void OnHighScoreChanged(int newscore)
+        => _highScore.text = newscore.ToString();
 
 
     //
@@ -165,16 +161,6 @@ public class UIController : MonoBehaviour
 
     
     
-    //
-    //Game Events
-    //
-    private void GameControllerOnHighScoreChanged(int newHighScore)
-        => _highScore.text = newHighScore.ToString();
-
-    private void GameControllerOnScoreChanged(int newScore)
-        => _inGameCurrentScore.text = newScore.ToString();
-    
-    
     
     //
     // Manages Ui changes
@@ -189,7 +175,7 @@ public class UIController : MonoBehaviour
                 _currentMenu = _mainMenu;
                break;
             case GameState.GameOver:
-                _finishedGameScore.text = _inGameCurrentScore.text;
+                _finishedGameScore.text = ScoreManager.CurrentScore.ToString();
                 _currentMenu = _gameOver;
                 if (_powerUpElement != null) RemovePowerUpElement();
                 break;

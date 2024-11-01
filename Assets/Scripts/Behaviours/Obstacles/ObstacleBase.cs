@@ -1,6 +1,6 @@
 using System;
 using Enums;
-using Spawners;
+using Managers;
 using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,12 +9,13 @@ namespace Behaviours.Obstacles
 {
     public class ObstacleBase : MonoBehaviour
     {
+        private const float SpecialCollectableProbability = 100;
         
         [SerializeField] public int difficulty;
         [SerializeField] public float heightVariation;
-    
-        
-        private float _moveSpeed;
+
+
+        protected float _moveSpeed = 2;
         private float _startLocation;
         private Vector2 _movementDirection;
         
@@ -26,22 +27,26 @@ namespace Behaviours.Obstacles
         
         public void Start()
         {
-            _moveSpeed = ObstacleSpawners.Instance.MoveSpeed;
             _startLocation = transform.position.x;
         
-            _movementDirection = GameController.Instance.CurrentGameDirection == GameDirection.Left 
+            _movementDirection = GameController.Instance.CurrentDirection == Direction.Left 
                 ? Vector2.right 
                 : Vector2.left;
             
             transform.position = new Vector2(_startLocation, GetRandomHeight());
+
+
+            var collectable = Random.Range(0, 100) <= SpecialCollectableProbability
+                ? CollectableManager.CollectableData
+                : CollectableManager.DefaultCollectable;
             
-            var randomCollectable = ObstacleSpawners.Instance.GetRandomCollectable();
+            
+            
             var collectables = GameObject.FindGameObjectsWithTag("Collectable");
-            
-            foreach (var collectable in collectables)
+            foreach (var currentObject in collectables)
             {
-                var collectableObject = Instantiate(randomCollectable, collectable.transform, true);
-                collectableObject.transform.position = collectable.transform.position;
+                var collectableObject = Instantiate(collectable, currentObject.transform, true);
+                collectableObject.transform.position = currentObject.transform.position;
             }
         
             GameController.DirectionChanged += GameControllerOnDirectionChanged;
@@ -66,15 +71,15 @@ namespace Behaviours.Obstacles
         {
             if (other.CompareTag("Player"))
             {
-                GameController.Instance.CurrentScore += 1;
+                ScoreManager.CurrentScore += 1;
             }
         }
     
         
         
-        private void GameControllerOnDirectionChanged(GameDirection newGameDirection)
+        private void GameControllerOnDirectionChanged(Direction newDirection)
         {
-            if (newGameDirection == GameDirection.Left)
+            if (newDirection == Direction.Left)
             {
                 _movementDirection = Vector2.right;
                 _startLocation = -_startLocation;
@@ -104,7 +109,16 @@ namespace Behaviours.Obstacles
         
         protected virtual float GetRandomHeight()
         {
-            return transform.position.y + Random.Range(-heightVariation, heightVariation);
+            var randomValue = Random.Range(0, heightVariation);
+            
+            if (Random.Range(1,30) % 2 == 1)
+            {
+                return randomValue;       
+            }
+            else
+            {
+                return -randomValue;
+            }
         }
     }
 }

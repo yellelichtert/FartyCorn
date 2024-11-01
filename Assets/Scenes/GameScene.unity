@@ -509,13 +509,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   obstacles:
-  - {fileID: 3987342894684454147, guid: e29077be2215d457ea01a7301a8b3e1b, type: 3}
+  - {fileID: 6140589288293814444, guid: 7f69dc5812f2f4ee8ad4cac5016ddd27, type: 3}
   - {fileID: 6140589288293814444, guid: 7f69dc5812f2f4ee8ad4cac5016ddd27, type: 3}
   defaultCollectable: {fileID: 2160127286497970619, guid: f2344a5f64aab49b0b098ec35d4f11ca, type: 3}
   specialCollectables:
   - {fileID: 3807319144912723364, guid: eeaecea5651bb4f83a48d5b134cfd3b8, type: 3}
   - {fileID: 2749522468040441005, guid: b161814b7d0194e308ac7011531c8745, type: 3}
-  specialCollectablePropability: 100
+  specialCollectablePropability: 8
 --- !u!1 &2120262415
 GameObject:
   m_ObjectHideFlags: 0

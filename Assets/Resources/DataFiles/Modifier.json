@@ -1,0 +1,12 @@
+[
+  {
+    "Name" : "ChangeDirection",
+    "Duration": -1,
+    "MinimumLevel": 0
+  },
+  {
+    "Name": "RotateCamera",
+    "Duration": 10,
+    "MinimumLevel" : 0
+  }
+]

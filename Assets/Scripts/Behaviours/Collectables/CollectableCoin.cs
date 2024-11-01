@@ -11,7 +11,7 @@ namespace Collectables
             
             base.OnTriggerEnter2D(other);
 
-            PowerUpManager.CoinsCollected++;
+            CollectableManager.CoinsCollected++;
         }
     }
 }

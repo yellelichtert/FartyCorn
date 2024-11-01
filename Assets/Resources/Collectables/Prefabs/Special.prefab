@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -2960936430024656213}
   - component: {fileID: 7647656790527545466}
   m_Layer: 0
-  m_Name: CollectablePowerUp
+  m_Name: Special
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Controllers;
 using Enums;
+using Managers;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -24,6 +26,8 @@ namespace Behaviours.Spawners
         private float _backgroundOffset;
         private List<ObjectController> _backgroundControllers = new();
         private GameObject _firstBackgroundObject;
+
+        private float _obstacleSpawnLocation;
         
         private Vector2 _screen;
         
@@ -33,24 +37,28 @@ namespace Behaviours.Spawners
         {
             _screen = Camera.main!.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
             _backgroundOffset = backgroundPrefab.GetComponent<SpriteRenderer>().sprite.bounds.size.x / 1.8f;
-            
+
+            _obstacleSpawnLocation = _screen.x + 1;
             
             SpawnBackground();
             
             
-            GameController.GameStateChanged += GameControllerOnGameStateChanged;
+            GameController.GameStateChanged += OnGameStateChanged;
+            GameController.DirectionChanged += OnDirectionChanged;
+            
             PlayerController.FirstTap += InvokeSpawnCloud;
+            PlayerController.FirstTap += SpawnObstacle;
             PlayerController.FirstTap += () => SetBackgroundMoveSpeed(backgroundMoveSpeed);
         }
 
-
+        
         private void Update()
         {
             if (_firstBackgroundObject.transform.position.x < -7f) SpawnBackground();
         }
         
     
-        private void GameControllerOnGameStateChanged(GameState newState)
+        private void OnGameStateChanged(GameState newState)
         {
             switch (newState)
             {
@@ -64,8 +72,24 @@ namespace Behaviours.Spawners
             
             if (newState != GameState.Playing) SetBackgroundMoveSpeed(0);
         }
+
+
+        private void SpawnObstacle()
+        {
+            if (GameController.Instance.CurrentGameState != GameState.Playing)
+                return;
+
+            var obstacle = Instantiate(ObstacleManager.GetRandom(), new Vector2(_obstacleSpawnLocation, 0), Quaternion.identity);
+            obstacle.DestroyEvent += SpawnObstacle;
+        }
         
-        
+        private void OnDirectionChanged(Direction newDirection)
+        {
+            _obstacleSpawnLocation = newDirection == Direction.Right 
+                ? math.abs(_obstacleSpawnLocation) 
+                : -_obstacleSpawnLocation;
+        }
+
         
         void SetBackgroundMoveSpeed(float moveSpeed)
         {

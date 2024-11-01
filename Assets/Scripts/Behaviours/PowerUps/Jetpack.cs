@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Managers;
 using UIElements;
@@ -20,7 +19,7 @@ namespace Behaviours.PowerUps
         private bool _holding;
         
 
-        private void Awake() => PowerUp =  PowerUpManager.PowerUps.FirstOrDefault(p => p.Name == nameof(Jetpack));
+        private void Awake() => PowerUpData =  CollectableManager.PowerUps.FirstOrDefault(p => p.Name == nameof(Jetpack));
 
         
         
@@ -30,7 +29,7 @@ namespace Behaviours.PowerUps
             _animator = GetComponent<Animator>();
 
             _audio = gameObject.GetComponent<AudioSource>();
-            _audio.clip = Resources.Load<AudioClip>(ResourcePaths.PlayerAudio + PowerUp.Name);
+            _audio.clip = Resources.Load<AudioClip>(ResourcePaths.PlayerAudio + PowerUpData.Name);
 
             ResetDuration();
             UiElement = new FuelBar(_fuel)
@@ -73,7 +72,7 @@ namespace Behaviours.PowerUps
                     }
 
 
-                    _rb.AddForce(Vector2.up * PowerUp.Power , ForceMode2D.Force);
+                    _rb.AddForce(Vector2.up * PowerUpData.Power , ForceMode2D.Force);
                     _fuel--;
                     ((FuelBar)UiElement).CurrentFuel = _fuel;
 
@@ -96,6 +95,6 @@ namespace Behaviours.PowerUps
         
         
         
-        public override void ResetDuration() => _fuel = PowerUp.Duration + PowerUp.Duration * PowerUp.CurrentLevel;
+        public override void ResetDuration() => _fuel = PowerUpData.Duration + PowerUpData.Duration * PowerUpData.CurrentLevel;
     }
 }
