@@ -436,7 +436,6 @@ GameObject:
   - component: {fileID: 1714304298}
   - component: {fileID: 1714304301}
   - component: {fileID: 1714304302}
-  - component: {fileID: 1714304303}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -495,27 +494,6 @@ MonoBehaviour:
   maxCloudInterval: 3
   backgroundPrefab: {fileID: 9172073617116589519, guid: e2b921d4158c64cc1ab7233fd506c249, type: 3}
   backgroundMoveSpeed: 1
---- !u!114 &1714304303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1714304296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 496f51230afa342d9bb1003b19a38b66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  obstacles:
-  - {fileID: 6140589288293814444, guid: 7f69dc5812f2f4ee8ad4cac5016ddd27, type: 3}
-  - {fileID: 6140589288293814444, guid: 7f69dc5812f2f4ee8ad4cac5016ddd27, type: 3}
-  defaultCollectable: {fileID: 2160127286497970619, guid: f2344a5f64aab49b0b098ec35d4f11ca, type: 3}
-  specialCollectables:
-  - {fileID: 3807319144912723364, guid: eeaecea5651bb4f83a48d5b134cfd3b8, type: 3}
-  - {fileID: 2749522468040441005, guid: b161814b7d0194e308ac7011531c8745, type: 3}
-  specialCollectablePropability: 8
 --- !u!1 &2120262415
 GameObject:
   m_ObjectHideFlags: 0

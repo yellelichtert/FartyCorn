@@ -1,6 +1,7 @@
 using Managers;
 using Model;
 using UnityEngine;
+using UnityEngine.InputSystem.XR.Haptics;
 using UnityEngine.UIElements;
 
 namespace UIElements
@@ -33,6 +34,9 @@ namespace UIElements
             Add(_upgradeButton);
         }
 
+        private int GetCurrentLevel()
+            => CollectableManager.GetUpgrade(_powerUp).UpgradeLevel;
+
         private void UpgradeButtonOnClicked()
         {
             CollectableManager.Upgrade(_powerUp);
@@ -43,7 +47,7 @@ namespace UIElements
         {
             var currentUpgradeCost = CollectableManager.GetUpgradeCost(_powerUp);
             _upgradeButton.SetEnabled(
-                currentUpgradeCost <= CollectableManager.CoinsCollected && _powerUp.CurrentLevel < _powerUp.UpgradeLevels
+                currentUpgradeCost <= CollectableManager.CoinsCollected && GetCurrentLevel() < _powerUp.UpgradeLevels
                 );
            
             
@@ -60,7 +64,7 @@ namespace UIElements
             
             for (int i = 0; i < _powerUp.UpgradeLevels; i++)
             {
-                painter.fillColor =  i >= _powerUp.CurrentLevel ? Color.gray : Color.green;
+                painter.fillColor =  i >= GetCurrentLevel() ? Color.gray : Color.green;
                 
                 painter.BeginPath();
                 

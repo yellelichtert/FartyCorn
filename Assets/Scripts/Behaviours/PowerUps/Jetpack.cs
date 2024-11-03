@@ -95,6 +95,7 @@ namespace Behaviours.PowerUps
         
         
         
-        public override void ResetDuration() => _fuel = PowerUpData.Duration + PowerUpData.Duration * PowerUpData.CurrentLevel;
+        public override void ResetDuration() => _fuel = PowerUpData.Duration + PowerUpData.Duration * CollectableManager.GetUpgrade(PowerUpData).UpgradeLevel;
+
     }
 }

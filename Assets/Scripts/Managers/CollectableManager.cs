@@ -4,7 +4,6 @@ using System.IO;
 using Behaviours.Collectables;
 using Behaviours.PowerUps;
 using Collectables;
-using Enums;
 using Model;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -22,6 +21,7 @@ namespace Managers
         
         public static readonly List<PowerUp> PowerUps;
         public static readonly List<Modifier> Modifiers;
+        public static List<Upgrade> Upgrades;
         
         
         private static bool _hasPowerUp;
@@ -31,13 +31,21 @@ namespace Managers
         
          static CollectableManager()
          {
+             File.Delete(GetFilePath<Modifier>());
+             File.Delete(GetFilePath<PowerUp>());
+             
              _coinsCollected = PlayerPrefs.GetInt(PlayerPrefKeys.CoinsCollected, 0);
              
-             PowerUps = LoadData<PowerUp>();
-             Modifiers = LoadData<Modifier>();
+             PowerUps = LoadStaticData<PowerUp>();
+             Modifiers = LoadStaticData<Modifier>();
+             Upgrades = LoadLocalData<Upgrade>();
+             
+             if ( Upgrades.Count > PowerUps.Count) CleanUpgradesFile();
+             
              
              DefaultCollectable = Resources.Load<CollectableCoin>("Collectables/Prefabs/Default");
              CollectableData = Resources.Load<SpecialCollectable>("Collectables/Prefabs/Special");
+             
              
              PowerUpBehaviour.PowerUpRemoved += () => _hasPowerUp = false;
              GameController.GameStateChanged += state => _hasPowerUp = false;
@@ -65,52 +73,79 @@ namespace Managers
                 CollectedCoinsChanged?.Invoke();
             }
         }
-        
-        
+
+
         public static int GetUpgradeCost(PowerUp powerUpData)
-            => (int)(powerUpData.UpgradeCost * (powerUpData.CurrentLevel > 0 ? powerUpData.CurrentLevel * powerUpData.UpgradeMultiplier : 1));
+        {
+            var currentLevel = GetUpgrade(powerUpData).UpgradeLevel;
+
+            return (int)(powerUpData.UpgradeCost * (currentLevel > 0 ? currentLevel * powerUpData.UpgradeMultiplier : 1));
+        }
+        
 
         
         public static void Upgrade(PowerUp powerUpData)
         {
             CoinsCollected -= GetUpgradeCost(powerUpData);
-            powerUpData.CurrentLevel++;
-            File.WriteAllText(GetFilePath<PowerUp>(), JsonConvert.SerializeObject(PowerUps));
+            GetUpgrade(powerUpData).UpgradeLevel++;
+            SaveLocalData(Upgrades);
         }
-
+        
 
         private static string GetFilePath<T>()
             => Path.Combine(Application.persistentDataPath, DataFiles.FolderName, $"{typeof(T).Name}.json");
+
+        public static Upgrade GetUpgrade(PowerUp powerUpData)
+        {
+            var upgrade = Upgrades.Find(u => u.UpgradableName == powerUpData.Name);
+
+            if (upgrade == null)
+            {
+                upgrade = new Upgrade(){UpgradableName = powerUpData.Name};
+                Upgrades.Add(upgrade);
+            }
+            
+            return upgrade;
+        }
+
+
+        private static List<T> LoadStaticData<T>()
+            => JsonConvert.DeserializeObject<List<T>>(Resources.Load<TextAsset>(Path.Combine(DataFiles.FolderName, typeof(T).Name)).text);
         
-        
-        private static List<T> LoadData<T>()
+        private static List<T> LoadLocalData<T>()
         {
             Debug.Log($"Loading data from {GetFilePath<T>()}");
             
-            string json;
+            
             if (!File.Exists(GetFilePath<T>()))
             {
-                Debug.Log("Loading default data from : " + Path.Combine(DataFiles.FolderName, typeof(T).Name));
-                json = Resources.Load<TextAsset>(Path.Combine(DataFiles.FolderName, typeof(T).Name)).text;
-
-                 
+                Debug.Log("Creating new File");
+                
                 if (!Directory.Exists(DirectoryPath))
                 {
                     Directory.CreateDirectory(DirectoryPath); 
                 }
                 
                 File.Create(GetFilePath<T>()).Close();
-                File.WriteAllText(Path.Combine(GetFilePath<T>()), json);
-                 
-            }
-            else
-            {
-                json = File.ReadAllText(GetFilePath<T>());
             }
             
-            Debug.Log("Done Loading data");
-            
-            return JsonConvert.DeserializeObject<List<T>>(json);
+            return JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(GetFilePath<T>())) ?? new List<T>();
         }
+
+        private static void SaveLocalData<T>(List<T> data)
+            => File.WriteAllText(GetFilePath<T>(), JsonConvert.SerializeObject(data));
+
+        private static void CleanUpgradesFile()
+        {
+            var newList = new List<Upgrade>();
+            foreach (var upgrade in Upgrades)
+            {
+                if (PowerUps.Find(p => p.Name == upgrade.UpgradableName) != null)
+                    newList.Add(upgrade);
+            }
+            
+            Upgrades = newList;
+        }
+        
     }
 }
