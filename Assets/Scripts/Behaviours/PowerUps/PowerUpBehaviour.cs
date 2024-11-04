@@ -1,4 +1,5 @@
 using System;
+using Behaviours.Modifiers;
 using Model;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,7 +12,7 @@ namespace Behaviours.PowerUps
         protected abstract VisualElement UiElement { get; set; }
 
 
-        public static event Action PowerUpRemoved;
+        public static event Action<VisualElement> PowerUpRemoved;
         public static event Action<PowerUp, VisualElement> PowerUpAdded;
 
 
@@ -25,9 +26,10 @@ namespace Behaviours.PowerUps
         
         protected void RemovePowerUp()
         {
-            PowerUpRemoved?.Invoke(); 
+            PowerUpRemoved?.Invoke(UiElement); 
             Destroy(this);
         }
-        
+
+        public abstract void Apply();
     }
 }

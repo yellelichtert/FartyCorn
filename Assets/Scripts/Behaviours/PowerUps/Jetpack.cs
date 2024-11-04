@@ -32,9 +32,9 @@ namespace Behaviours.PowerUps
             _audio.clip = Resources.Load<AudioClip>(ResourcePaths.PlayerAudio + PowerUpData.Name);
 
             ResetDuration();
-            UiElement = new FuelBar(_fuel)
+            UiElement = new CollectableTimer(_fuel, PowerUpData.Name, Color.magenta)
             {
-                CurrentFuel = _fuel
+                CurrentFuel = _fuel,
             };
             
             base.Start();
@@ -74,7 +74,7 @@ namespace Behaviours.PowerUps
 
                     _rb.AddForce(Vector2.up * PowerUpData.Power , ForceMode2D.Force);
                     _fuel--;
-                    ((FuelBar)UiElement).CurrentFuel = _fuel;
+                    ((CollectableTimer)UiElement).CurrentFuel = _fuel;
 
 
                     if (!_audio.isPlaying) _audio.Play();

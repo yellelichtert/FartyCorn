@@ -32,6 +32,7 @@ public class UIController : MonoBehaviour
     private Label _highScore;
 
     [CanBeNull] private VisualElement _powerUpElement;
+    public VisualElement CollectableElements;
     
     
     void Awake()
@@ -116,7 +117,24 @@ public class UIController : MonoBehaviour
             if (powerUp.UpgradeLevels == 0) continue;
             upgradebars.Add(new UpgradeBar(powerUp, upgradebars));
         }
-        
+
+
+        CollectableElements = new VisualElement()
+        {
+            style =
+            {
+                display = DisplayStyle.Flex,
+                flexDirection = FlexDirection.Column,
+                alignSelf = Align.FlexEnd,
+                alignItems = Align.FlexEnd,
+                alignContent = Align.FlexEnd,
+                width = Length.Percent(95),
+                height = Length.Percent(100),
+                position = Position.Absolute,
+                visibility = Visibility.Hidden,
+            }
+        };
+        _uiRoot.Add(CollectableElements);
         
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         
@@ -174,10 +192,14 @@ public class UIController : MonoBehaviour
             case GameState.Menu:
                 _currentMenu = _mainMenu;
                break;
+            case GameState.Playing:
+                CollectableElements.visible = true;
+                break;
             case GameState.GameOver:
+                CollectableElements.Clear();
+                CollectableElements.visible = false;
                 _finishedGameScore.text = ScoreManager.CurrentScore.ToString();
                 _currentMenu = _gameOver;
-                if (_powerUpElement != null) RemovePowerUpElement();
                 break;
         }
         
@@ -206,19 +228,10 @@ public class UIController : MonoBehaviour
         _currentMenu.visible = true;
     }
 
-    private void OnPowerUpAdded(PowerUp x, VisualElement uiElement)
-    {
-        _powerUpElement = uiElement;
-        _uiRoot.Add(_powerUpElement);
-    }
+    private void OnPowerUpAdded(PowerUp _, VisualElement e)
+        => CollectableElements.Add(e);
 
 
-    private void RemovePowerUpElement()
-    {
-        if (_powerUpElement != null)
-        {
-            _uiRoot.Remove(_powerUpElement);
-            _powerUpElement = null;
-        }
-    }
+    private void RemovePowerUpElement(VisualElement e)
+        => CollectableElements.Remove(e);
 }

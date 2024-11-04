@@ -47,8 +47,8 @@ namespace Managers
              CollectableData = Resources.Load<SpecialCollectable>("Collectables/Prefabs/Special");
              
              
-             PowerUpBehaviour.PowerUpRemoved += () => _hasPowerUp = false;
-             GameController.GameStateChanged += state => _hasPowerUp = false;
+             PowerUpBehaviour.PowerUpRemoved += _ => _hasPowerUp = false;
+             GameController.GameStateChanged += _ => _hasPowerUp = false;
          }
 
 

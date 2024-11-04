@@ -110,13 +110,13 @@ namespace Controllers
             PowerUpBehaviour.PowerUpRemoved -= SetToDefault;
         }
 
-        private void OnPowerUpAdded(PowerUp powerUpData, VisualElement UiElement)
+        private void OnPowerUpAdded(PowerUp powerUpData, VisualElement _)
         {
             _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + powerUpData.Name);
             _animator.enabled = true;
         }
     
-        private void SetToDefault()
+        private void SetToDefault(VisualElement _ = null)
         {
             var fileName = "Default";
         
