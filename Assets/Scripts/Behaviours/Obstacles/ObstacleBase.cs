@@ -9,7 +9,7 @@ namespace Behaviours.Obstacles
 {
     public class ObstacleBase : MonoBehaviour
     {
-        private const float SpecialCollectableProbability = 100;
+        private const float SpecialCollectableProbability = 8;
         
         [SerializeField] public int difficulty;
         [SerializeField] public float heightVariation;

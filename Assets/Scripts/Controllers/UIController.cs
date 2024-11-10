@@ -32,7 +32,7 @@ public class UIController : MonoBehaviour
     private Label _highScore;
 
     [CanBeNull] private VisualElement _powerUpElement;
-    public VisualElement CollectableElements;
+    private VisualElement _collectableElements;
     
     
     void Awake()
@@ -119,29 +119,27 @@ public class UIController : MonoBehaviour
         }
 
 
-        CollectableElements = new VisualElement()
+        _collectableElements = new VisualElement()
         {
             style =
             {
                 display = DisplayStyle.Flex,
-                flexDirection = FlexDirection.Column,
-                alignSelf = Align.FlexEnd,
+                flexDirection = FlexDirection.ColumnReverse,
+                alignSelf = Align.Center,
                 alignItems = Align.FlexEnd,
-                alignContent = Align.FlexEnd,
                 width = Length.Percent(95),
-                height = Length.Percent(100),
+                height = Length.Percent(90),
+                bottom = Length.Percent(7),
                 position = Position.Absolute,
                 visibility = Visibility.Hidden,
             }
         };
-        _uiRoot.Add(CollectableElements);
+        _uiRoot.Add(_collectableElements);
         
         GameController.GameStateChanged += GameControllerOnGameStateChanged;
         
         ScoreManager.HighScoreChanged += OnHighScoreChanged;
         
-        PowerUpBehaviour.PowerUpAdded += OnPowerUpAdded;
-        PowerUpBehaviour.PowerUpRemoved += RemovePowerUpElement;
         
         CollectableManager.CollectedCoinsChanged += () => totalCoins.text = $"Total Coins: {CollectableManager.CoinsCollected}";
     }
@@ -193,11 +191,11 @@ public class UIController : MonoBehaviour
                 _currentMenu = _mainMenu;
                break;
             case GameState.Playing:
-                CollectableElements.visible = true;
+                _collectableElements.visible = true;
                 break;
             case GameState.GameOver:
-                CollectableElements.Clear();
-                CollectableElements.visible = false;
+                _collectableElements.Clear();
+                _collectableElements.visible = false;
                 _finishedGameScore.text = ScoreManager.CurrentScore.ToString();
                 _currentMenu = _gameOver;
                 break;
@@ -228,10 +226,7 @@ public class UIController : MonoBehaviour
         _currentMenu.visible = true;
     }
 
-    private void OnPowerUpAdded(PowerUp _, VisualElement e)
-        => CollectableElements.Add(e);
-
-
-    private void RemovePowerUpElement(VisualElement e)
-        => CollectableElements.Remove(e);
+    
+    public void AddModifierElement(VisualElement e)
+        => _collectableElements.Add(e);
 }

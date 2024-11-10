@@ -34,7 +34,7 @@ namespace Behaviours.PowerUps
             ResetDuration();
             UiElement = new CollectableTimer(_fuel, PowerUpData.Name, Color.magenta)
             {
-                CurrentFuel = _fuel,
+                RemainingDuration = _fuel,
             };
             
             base.Start();
@@ -74,7 +74,7 @@ namespace Behaviours.PowerUps
 
                     _rb.AddForce(Vector2.up * PowerUpData.Power , ForceMode2D.Force);
                     _fuel--;
-                    ((CollectableTimer)UiElement).CurrentFuel = _fuel;
+                    ((CollectableTimer)UiElement).RemainingDuration = _fuel;
 
 
                     if (!_audio.isPlaying) _audio.Play();

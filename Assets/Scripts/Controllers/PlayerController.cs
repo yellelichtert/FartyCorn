@@ -4,6 +4,7 @@ using Behaviours.PowerUps;
 using Enums;
 using Model;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,7 +12,7 @@ namespace Controllers
 {
     public class PlayerController : MonoBehaviour
     {
-    
+        public static PlayerController Instance;
     
         [SerializeField] private float tapForce;
         [SerializeField] private GameObject thrustPrefab;
@@ -25,9 +26,10 @@ namespace Controllers
     
     
         public static event Action FirstTap;
-    
 
-    
+
+        private void Awake()
+            => Instance = this;
 
         private void Start()
         {
@@ -36,11 +38,8 @@ namespace Controllers
             _renderer = GetComponent<SpriteRenderer>();
             _animator = gameObject.GetComponent<Animator>();
         
-            SetToDefault();
-
-            PowerUpBehaviour.PowerUpAdded += OnPowerUpAdded;
-            PowerUpBehaviour.PowerUpRemoved += SetToDefault;
-        
+            ConfigureComponents();
+            
             GameController.DirectionChanged += OnDirectionChanged;
         }
 
@@ -105,24 +104,13 @@ namespace Controllers
         private void OnDestroy()
         {
             GameController.DirectionChanged -= OnDirectionChanged;
-        
-            PowerUpBehaviour.PowerUpAdded -= OnPowerUpAdded;
-            PowerUpBehaviour.PowerUpRemoved -= SetToDefault;
         }
 
-        private void OnPowerUpAdded(PowerUp powerUpData, VisualElement _)
+      
+        public void ConfigureComponents(string fileName = "default")
         {
-            _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + powerUpData.Name);
-            _animator.enabled = true;
-        }
-    
-        private void SetToDefault(VisualElement _ = null)
-        {
-            var fileName = "Default";
-        
             _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + fileName);
             _audio.clip = Resources.Load<AudioClip>(ResourcePaths.PlayerAudio + fileName);
-        
             _animator.enabled = false;
         }
     }

@@ -79,7 +79,7 @@ namespace UIElements
             }
         }
         
-        public float CurrentFuel
+        public float RemainingDuration
         {
             set
             {
@@ -87,9 +87,5 @@ namespace UIElements
                 _progressBar.MarkDirtyRepaint();
             }
         }
-        
-       
-        
-        
     }
 }

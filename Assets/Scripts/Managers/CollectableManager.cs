@@ -22,9 +22,10 @@ namespace Managers
         public static readonly List<PowerUp> PowerUps;
         public static readonly List<Modifier> Modifiers;
         public static List<Upgrade> Upgrades;
+
+        public static List<CollectableData> ActiveNonStackable = new();
         
         
-        private static bool _hasPowerUp;
         private static int _coinsCollected;
         
         private static readonly string DirectoryPath = Path.Combine(Application.persistentDataPath, DataFiles.FolderName);
@@ -46,20 +47,30 @@ namespace Managers
              DefaultCollectable = Resources.Load<CollectableCoin>("Collectables/Prefabs/Default");
              CollectableData = Resources.Load<SpecialCollectable>("Collectables/Prefabs/Special");
              
-             
-             PowerUpBehaviour.PowerUpRemoved += _ => _hasPowerUp = false;
-             GameController.GameStateChanged += _ => _hasPowerUp = false;
          }
 
 
          public static CollectableData GetSpecial()
          {
-             if (_hasPowerUp || Random.Range(0, 1) != 0) 
-                 return Modifiers[Random.Range(0, Modifiers.Count)];
+             CollectableData randomCollectable = null;
+             var randomType = Random.Range(0, 2);
+             Debug.Log("Random Type: " + randomType);
              
+             while (randomCollectable == null || ActiveNonStackable.Contains(randomCollectable))
+             {
+                 switch (randomType)
+                 {
+                     case 0:
+                         randomCollectable = Modifiers[Random.Range(0, Modifiers.Count)];
+                         break;
+                     case 1:
+                         randomCollectable = PowerUps[Random.Range(0, PowerUps.Count)];
+                         break;
+                         
+                 }
+             }
              
-             _hasPowerUp = true;
-             return PowerUps[Random.Range(0, PowerUps.Count)];
+             return randomCollectable;
          }
     
          

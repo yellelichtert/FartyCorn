@@ -31,14 +31,23 @@ namespace Behaviours.Collectables
             
             if (_collectableDataData.GetType() == typeof(PowerUp))
             {
-                other
-                    .gameObject
-                    .AddComponent(GetBehaviourType<PowerUpBehaviour>());
+
+                var existingPowerUp = (PowerUpBehaviour)other.GetComponent(GetBehaviourType<PowerUpBehaviour>());
+                if (existingPowerUp != null)
+                {
+                    existingPowerUp.ResetDuration();
+                }
+                else
+                {
+                    other
+                        .gameObject
+                        .AddComponent(GetBehaviourType<PowerUpBehaviour>());
+                }
             }
             else
             {
                 ((IModifier)Activator
-                    .CreateInstance(GetBehaviourType<IModifier>()))
+                        .CreateInstance(GetBehaviourType<IModifier>()))
                     .Apply();
             }
         }
