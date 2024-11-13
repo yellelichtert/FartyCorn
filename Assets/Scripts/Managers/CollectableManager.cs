@@ -54,7 +54,6 @@ namespace Managers
          {
              CollectableData randomCollectable = null;
              var randomType = Random.Range(0, 2);
-             Debug.Log("Random Type: " + randomType);
              
              while (randomCollectable == null || ActiveNonStackable.Contains(randomCollectable))
              {

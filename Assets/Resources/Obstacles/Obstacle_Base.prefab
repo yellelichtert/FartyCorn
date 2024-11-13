@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6140589288293814444}
   - component: {fileID: -6573322336170833552}
   m_Layer: 0
-  m_Name: Obstacle_01
+  m_Name: Obstacle_Base
   m_TagString: GamePlayObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,10 +45,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8127059860741285607}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7daf4f206450848d08c14fd45f7b3ce2, type: 3}
+  m_Script: {fileID: 11500000, guid: 24511f426eef9438080037a9099b05f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 0
   heightVariation: 0
 --- !u!61 &-6573322336170833552
 BoxCollider2D:

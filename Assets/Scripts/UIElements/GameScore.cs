@@ -1,91 +1,116 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Enums;
 using Managers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 
 namespace UIElements
 {
-    public class GameScore : VisualElement
-    {
-        private Label _currentScore;
-        private bool _isSwitchingColors;
-        
-        public GameScore()
-        {
-            
-            var font = Resources.Load<Font>("Fonts/Font_Pixel");
-            
-            style.position = Position.Absolute;
-            style.top = Length.Percent(5);
-            style.unityFontDefinition = new FontDefinition() { font = font };
-            style.flexGrow = 0;
-            style.flexShrink = 0;
-            style.alignSelf = Align.Center;
-            
-            
-            _currentScore = new Label
-            {
-                style =
-                {
-                    position = Position.Absolute,
-                    fontSize = Length.Percent(150),
-                    color = Color.white,
-                    alignContent = Align.Center,
-                    flexGrow = 0,
-                    flexShrink = 0,
-                    width = Length.Percent(100),
-                    height = Length.Percent(100),
-                    right = Length.Percent(5)
-                },
-                text = "0"
-            };
-            
-            
-            Add(_currentScore);
-            
-            _currentScore.text = "0";
+   public class GameScore : MonoBehaviour
+   {
+      public TextMeshProUGUI currentScore;
+      public TextMeshProUGUI level;
+      public Image highScore;
+      public Sprite[] highScoreSprites;
 
-            GameController.GameStateChanged += OnGameStateChanged;
-            ScoreManager.ScoreChanged += OnScoreChanged;
-            ScoreManager.HighScoreChanged += OnHighScoreChanged;
-        }
+      private void Awake()
+      {
+         ScoreManager.ScoreChanged += OnScoreChanged;
+         ScoreManager.LevelChanged += OnLevelChanged;
+         ScoreManager.HighScoreChanged += _ => StartCoroutine(nameof(OnHighScoreChanged));
+         
+         GameController.GameStateChanged += OnGameStateChanged;
+         
+         SetInitialState();
+      }
 
-        private void OnGameStateChanged(GameState newState)
-        { 
-            if(newState == GameState.GameOver) _isSwitchingColors = false;
-            _currentScore.style.color = Color.white;
-        }
+      private void OnGameStateChanged(GameState obj)
+      {
+         switch (obj)
+         {
+            case GameState.Playing:
+               currentScore.enabled = true;
+               level.enabled = false;
+               break;
             
-        
-        private void OnScoreChanged(int newScore) => _currentScore.text = newScore.ToString();
+            default:
+               StopAllCoroutines();
+               SetInitialState();
+               break;
+         }
+      }
+      
+      private void OnScoreChanged(int newScore)
+         => currentScore.text = newScore.ToString();
 
 
-        private void OnHighScoreChanged(int _) => RainbowColor();
-        private async void RainbowColor()
-        {
-            if (_isSwitchingColors) return;
-            _isSwitchingColors = true;
+     
+      private IEnumerator OnHighScoreChanged()
+      {
+         ChangeFlameVisibility(Visibility.Visible);
+
+         var currentIndex = 0;
+         while (highScore.enabled)
+         {
+            highScore.sprite = highScoreSprites[currentIndex];
+
+            currentIndex++;
+            if (currentIndex > highScoreSprites.Length-1) 
+               currentIndex = 0;
+
+            yield return new WaitForSeconds(0.1f);
             
-            List<Color> colors = new List<Color>()
-            {
-                Color.red,
-                Color.yellow,
-                Color.green,
-                Color.blue,
-                Color.magenta
-            };
-            
-            while (_isSwitchingColors)
-            {
-                foreach (var color in colors)
-                {
-                    _currentScore.style.color = color;
-                    await Task.Delay(125);
-                }
-            }
-        }
-    }
+         }
+      }
+
+      private async void OnLevelChanged(int newLevel)
+      {
+         bool highScoreEnabled = highScore.enabled;
+         
+         level.alpha = 0;
+         level.text = $"Level {newLevel}";
+         
+         ChangeVisibility();
+         await Task.Delay(2500);
+         ChangeVisibility();
+         return;
+         
+         
+         void ChangeVisibility()
+         {
+            currentScore.enabled = !currentScore.enabled;
+            level.enabled = !level.enabled;
+         }
+      }
+
+      private void ChangeFlameVisibility(Visibility visibility)
+      {
+         var color = highScore.color;
+         color.a = visibility == Visibility.Hidden ? 0f : 1f;
+         
+         highScore.color = color;
+      }
+      
+
+      private void Update()
+      {
+         if (level.enabled && level.alpha < 1)
+         {
+            level.alpha += Time.deltaTime;
+         }
+      }
+
+
+
+      private void SetInitialState()
+      {
+         ChangeFlameVisibility(Visibility.Hidden);
+         level.enabled = false;
+         currentScore.enabled = false;
+      }
+   }
 }

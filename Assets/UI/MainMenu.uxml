@@ -12,7 +12,7 @@
         </ui:VisualElement>
         <ui:VisualElement name="GameOver" style="flex-grow: 0; flex-shrink: 0; height: 40%; width: 85%; background-image: url(&quot;project://database/Assets/Art/Game_Over_Panel.png?fileID=2800000&amp;guid=98a70c5c7a8244dd4bb1a61321d764a4&amp;type=3#Game_Over_Panel&quot;); -unity-background-scale-mode: stretch-to-fill; justify-content: center; align-self: center; display: flex; visibility: visible; position: absolute; bottom: 760px; left: 92px; overflow: visible; -unity-font: resource(&apos;Fonts/Font_Pixel&apos;);">
             <ui:VisualElement name="ScoreRow" style="flex-grow: 0; flex-direction: row; align-self: center; -unity-text-align: middle-center; align-items: center; flex-shrink: 0; justify-content: space-between; font-size: 90%; -unity-font: url(&quot;project://database/Assets/Resources/Fonts/Font_Pixel.TTF?fileID=12800000&amp;guid=0fdfa91681c6a405992d8570c3b1bde2&amp;type=3#Font_Pixel&quot;); -unity-font-definition: initial; white-space: normal; width: 80%; display: flex; height: 30%; top: 10%;">
-                <ui:VisualElement name="GameScore" style="flex-grow: 1;">
+                <ui:VisualElement name="GameScoreOLD" style="flex-grow: 1;">
                     <ui:Label tabindex="-1" text="score" parse-escape-sequences="true" display-tooltip-when-elided="true" style="height: 58px;" />
                     <ui:Label tabindex="-1" text="x" parse-escape-sequences="true" display-tooltip-when-elided="true" name="GameScoreValue" />
                 </ui:VisualElement>

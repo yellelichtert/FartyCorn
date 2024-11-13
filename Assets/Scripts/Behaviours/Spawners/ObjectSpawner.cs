@@ -107,8 +107,8 @@ namespace Behaviours.Spawners
                 
             
             Vector3 spawnLocation = isFirstSpawn
-                ? new Vector3(8, -_screen.y * 0.57f, 20)
-                : new Vector3(_screen.x + _backgroundOffset, -_screen.y * 0.57f, 20);
+                ? new Vector3(8, -_screen.y * 0.57f, 19)
+                : new Vector3(_screen.x + _backgroundOffset, -_screen.y * 0.57f, 19);
             
             GameObject obj = Instantiate(backgroundPrefab, spawnLocation, Quaternion.identity);
             

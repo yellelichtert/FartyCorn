@@ -17,7 +17,7 @@ namespace Behaviours.PowerUps
         protected void Start() 
         {
             PlayerController.Instance.ConfigureComponents(PowerUpData.Name);
-            UIController.Instance.AddModifierElement(UiElement);
+            UIControllerOLD.Instance.AddModifierElement(UiElement);
         }
 
         

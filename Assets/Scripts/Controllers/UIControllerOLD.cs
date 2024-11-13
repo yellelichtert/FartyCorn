@@ -7,9 +7,9 @@ using UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UIController : MonoBehaviour
+public class UIControllerOLD : MonoBehaviour
 {
-    public static UIController Instance;
+    public static UIControllerOLD Instance;
     
     private GameController _gameController;
     
@@ -27,7 +27,7 @@ public class UIController : MonoBehaviour
     private VisualElement _currentMenu;
     private VisualElement _currentSubMenu;
     
-    private GameScore _inGameCurrentScore;
+    // private GameScoreOLD _inGameCurrentScoreOld;
     private Label _finishedGameScore;
     private Label _highScore;
 
@@ -89,8 +89,8 @@ public class UIController : MonoBehaviour
         
         _finishedGameScore = _uiRoot.Q<Label>("GameScoreValue");
 
-        _inGameCurrentScore = new GameScore();
-        _uiRoot.Add(_inGameCurrentScore);
+        // _inGameCurrentScoreOld = new GameScoreOLD();
+        // _uiRoot.Add(_inGameCurrentScoreOld);
         
         
         Toggle soundToggle = _uiRoot.Q<Toggle>("SoundToggle");
@@ -203,7 +203,7 @@ public class UIController : MonoBehaviour
         
         
         _currentMenu.visible = newState != GameState.Playing;
-        _inGameCurrentScore.visible = newState == GameState.Playing;
+        // _inGameCurrentScoreOld.visible = newState == GameState.Playing;
     }
     
     

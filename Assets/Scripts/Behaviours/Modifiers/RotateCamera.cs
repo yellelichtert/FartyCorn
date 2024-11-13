@@ -26,7 +26,7 @@ namespace Behaviours.Modifiers
 
             _uiElement = new CollectableTimer(_data.Duration, _data.Name, Color.cyan); //Dit nog fixe om gwn data object mee te geve?
             
-            UIController.Instance.AddModifierElement(_uiElement);
+            UIControllerOLD.Instance.AddModifierElement(_uiElement);
             CollectableManager.ActiveNonStackable.Add(_data);
             
             GameController.GameStateChanged += _ => Remove();

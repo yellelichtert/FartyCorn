@@ -20,9 +20,9 @@ namespace Managers
         static ScoreManager()
         {
             HighScore = PlayerPrefs.GetInt("HighScore", 0);
-
             GameController.GameStateChanged += OnGameStateChanged;
 
+            HighScore = 0;
         }
 
 
@@ -39,11 +39,14 @@ namespace Managers
             {   
                 _currentScore = value;
                 ScoreChanged?.Invoke(_currentScore);
-
+                
+                
                 if (_highScore < value)
                     HighScore = value;
 
-                if (_currentScore % 10 == 0)
+                if (value == 0)
+                    _currentLevel = 0;
+                else if (_currentScore % 10 == 0)
                     CurrentLevel++;
             }
         }
@@ -52,9 +55,10 @@ namespace Managers
         
         public static int HighScore
         {
-            get => _currentScore;
-            set
+            get => _highScore;
+            private set
             {
+                PlayerPrefs.SetInt("HighScore", value);
                 _highScore = value;
                 HighScoreChanged?.Invoke(value);
             }
@@ -64,7 +68,7 @@ namespace Managers
         
         public static int CurrentLevel
         {
-            get => _currentScore;
+            get => _currentLevel;
             private set
             {
                 _currentLevel = value;

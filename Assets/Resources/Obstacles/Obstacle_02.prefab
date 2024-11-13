@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7163859335722398760}
-  - component: {fileID: 6140589288293814444}
   - component: {fileID: -6573322336170833552}
+  - component: {fileID: 5984678286209821406}
   m_Layer: 0
-  m_Name: Obstacle_01
+  m_Name: Obstacle_02
   m_TagString: GamePlayObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,20 +36,6 @@ Transform:
   - {fileID: 5119571444876084513}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6140589288293814444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8127059860741285607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7daf4f206450848d08c14fd45f7b3ce2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  difficulty: 1
-  heightVariation: 0
 --- !u!61 &-6573322336170833552
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -95,6 +81,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 20}
   m_EdgeRadius: 0
+--- !u!114 &5984678286209821406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8127059860741285607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 484fa7b013d18495f919677bd7846483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulty: 2
+  heightVariation: 0
 --- !u!1 &8766100167250127647
 GameObject:
   m_ObjectHideFlags: 0

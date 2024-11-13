@@ -54,7 +54,7 @@ namespace Behaviours.Obstacles
     
         
         
-        public virtual void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             transform.Translate(_movementDirection * (_moveSpeed * Time.deltaTime));
 
