@@ -21,8 +21,7 @@ namespace Managers
         {
             HighScore = PlayerPrefs.GetInt("HighScore", 0);
             GameController.GameStateChanged += OnGameStateChanged;
-
-            HighScore = 0;
+            
         }
 
 
@@ -45,7 +44,7 @@ namespace Managers
                     HighScore = value;
 
                 if (value == 0)
-                    _currentLevel = 0;
+                    CurrentLevel = 0;
                 else if (_currentScore % 10 == 0)
                     CurrentLevel++;
             }

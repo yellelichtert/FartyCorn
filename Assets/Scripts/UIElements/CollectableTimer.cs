@@ -1,4 +1,5 @@
 using System;
+using Model;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.VFX;
@@ -17,9 +18,9 @@ namespace UIElements
         
         
         
-        public CollectableTimer(float totalDuration, string collectableName, Color fillColor)
+        public CollectableTimer(CollectableData collectable, Color fillColor)
         {
-            _totalDuration = totalDuration;
+            _totalDuration = collectable.Duration;
             _fillColor = fillColor;
             
             style.display = DisplayStyle.Flex;
@@ -39,7 +40,7 @@ namespace UIElements
                 {
                     height = Length.Percent(100),
                     width = Length.Percent(15),
-                    backgroundImage = new StyleBackground(Resources.Load<Sprite>(ResourcePaths.CollectableSprites + collectableName)),
+                    backgroundImage = new StyleBackground(Resources.Load<Sprite>(ResourcePaths.CollectableSprites + collectable.Name)),
                     visibility = Visibility.Visible
                 }
             };

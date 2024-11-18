@@ -6,31 +6,34 @@ using Model;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 namespace Controllers
 {
     public class PlayerController : MonoBehaviour
     {
+        
         public static PlayerController Instance;
-    
-        [SerializeField] private float tapForce;
-        [SerializeField] private GameObject thrustPrefab;
-    
+        private void Awake()
+            => Instance = this;
+        
+        
+        
+        private const float TapForce = 5;
+        private GameObject _thrustPrefab;
         private AudioSource _audio;
         private Rigidbody2D _rb;
         private SpriteRenderer _renderer;
         private Animator _animator;
         private bool _firstTap = true;
-    
-    
-    
+        
+        
+        
         public static event Action FirstTap;
 
 
-        private void Awake()
-            => Instance = this;
-
+        
         private void Start()
         {
             _audio = gameObject.AddComponent<AudioSource>();
@@ -69,13 +72,13 @@ namespace Controllers
             }
         
             _audio.Play();
-            _rb.AddForce(Vector2.up * tapForce, ForceMode2D.Impulse);
+            _rb.AddForce(Vector2.up * TapForce, ForceMode2D.Impulse);
             StartCoroutine(Thrust());
         }
     
     
     
-        private void OnCollisionEnter2D(Collision2D collision)
+        private void OnCollisionEnter2D(Collision2D _)
         {
             Destroy(gameObject);
             GameController.Instance.CurrentGameState = GameState.GameOver;
@@ -85,7 +88,7 @@ namespace Controllers
     
         private IEnumerator Thrust()
         {
-            var thrust = Instantiate(thrustPrefab, new Vector2(transform.position.x+0.1f, transform.position.y-0.5f), Quaternion.identity);
+            var thrust = Instantiate(_thrustPrefab, new Vector2(transform.position.x+0.1f, transform.position.y-0.5f), Quaternion.identity);
         
             var animationLength = thrust.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length;
         
@@ -101,16 +104,21 @@ namespace Controllers
             _renderer.flipX = newDirection == Direction.Left;
         }
     
+        
+        
         private void OnDestroy()
         {
             GameController.DirectionChanged -= OnDirectionChanged;
         }
 
+        
       
         public void ConfigureComponents(string fileName = "default")
         {
             _renderer.sprite = Resources.Load<Sprite>(ResourcePaths.PlayerSprites + fileName);
             _audio.clip = Resources.Load<AudioClip>(ResourcePaths.PlayerAudio + fileName);
+            _thrustPrefab = Resources.Load<GameObject>(ResourcePaths.PlayerThrust + fileName);
+            
             _animator.enabled = false;
         }
     }

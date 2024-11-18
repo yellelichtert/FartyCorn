@@ -5,7 +5,9 @@ namespace Behaviours.Modifiers
 {
     public class ChangeDirection : IModifier
     {
+        
         private readonly GameController _gameController = GameController.Instance;
+        
         
         
         public void Apply()

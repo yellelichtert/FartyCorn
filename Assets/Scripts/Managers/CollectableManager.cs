@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using Behaviours.Collectables;
 using Behaviours.PowerUps;
-using Collectables;
 using Model;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -124,12 +123,9 @@ namespace Managers
         
         private static List<T> LoadLocalData<T>()
         {
-            Debug.Log($"Loading data from {GetFilePath<T>()}");
-            
             
             if (!File.Exists(GetFilePath<T>()))
             {
-                Debug.Log("Creating new File");
                 
                 if (!Directory.Exists(DirectoryPath))
                 {

@@ -11,6 +11,7 @@ namespace Behaviours.Modifiers
 {
     public class RotateCamera : IModifier
     {
+        
         private readonly Modifier _data;
         private readonly Camera _camera;
         private readonly CollectableTimer _uiElement;
@@ -18,20 +19,23 @@ namespace Behaviours.Modifiers
         private bool _removed;
         private Action<GameState> _stateChangedHandler;
         
+        
+        
         public RotateCamera()
         {
             
             _data = CollectableManager.Modifiers.First(m => m.Name == nameof(RotateCamera));
             _camera = Camera.main;
 
-            _uiElement = new CollectableTimer(_data.Duration, _data.Name, Color.cyan); //Dit nog fixe om gwn data object mee te geve?
+            _uiElement = new CollectableTimer(_data, Color.cyan);
             
-            UIControllerOLD.Instance.AddModifierElement(_uiElement);
+            UIController.Instance.AddModifierElement(_uiElement);
             CollectableManager.ActiveNonStackable.Add(_data);
             
             GameController.GameStateChanged += _ => Remove();
         }
 
+        
         
         public async void Apply()
         {
@@ -47,6 +51,7 @@ namespace Behaviours.Modifiers
             Remove();
         }
 
+        
 
         private void Remove()
         {

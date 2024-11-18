@@ -38,10 +38,6 @@ public class GameController : MonoBehaviour
 
     
 
-    
-
-    
-
     public GameState CurrentGameState
     {
         get => _currentGameState;

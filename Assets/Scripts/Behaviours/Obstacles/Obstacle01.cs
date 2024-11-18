@@ -4,11 +4,13 @@ namespace Behaviours.Obstacles
 {
     public class Obstacle01 : ObstacleBase
     { 
+        
         protected Vector2 YDirection;
         protected float YBase;
         protected float YOffset;
         private float _yMoveSpeed;
 
+        
 
         protected virtual void Awake()
         {
@@ -21,6 +23,7 @@ namespace Behaviours.Obstacles
             YBase = transform.position.y;
             YOffset = Camera.main!.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).y;
         }
+        
         
         
         protected override void FixedUpdate()

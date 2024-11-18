@@ -1,13 +1,12 @@
 using UnityEngine;
 
-namespace Collectables
+namespace Behaviours.Collectables
 {
     public abstract class CollectableBase : MonoBehaviour
     {
         
         private AudioSource _collectSound;
         private Collider2D _collider2D;
-        
         protected SpriteRenderer SpriteRenderer;
 
         

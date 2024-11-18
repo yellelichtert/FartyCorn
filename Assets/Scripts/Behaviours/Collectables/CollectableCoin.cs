@@ -1,13 +1,13 @@
 using Managers;
 using UnityEngine;
 
-namespace Collectables
+namespace Behaviours.Collectables
 {
     public class CollectableCoin : CollectableBase
     {
         protected override void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.CompareTag("Player")) return;
+            if (!other.CompareTag(Tags.Player)) return;
             
             base.OnTriggerEnter2D(other);
 

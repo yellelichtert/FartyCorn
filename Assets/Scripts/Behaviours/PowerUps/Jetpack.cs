@@ -9,16 +9,14 @@ namespace Behaviours.PowerUps
     public class Jetpack : PowerUpBehaviour
     {
         protected override VisualElement UiElement { get; set; }
-        
         private Rigidbody2D _rb;
         private AudioSource _audio;
         private Animator _animator;
-        
-        
         private float _fuel;
         private bool _holding;
         
 
+        
         private void Awake() => PowerUpData =  CollectableManager.PowerUps.FirstOrDefault(p => p.Name == nameof(Jetpack));
 
         
@@ -32,14 +30,13 @@ namespace Behaviours.PowerUps
             _audio.clip = Resources.Load<AudioClip>(ResourcePaths.PlayerAudio + PowerUpData.Name);
 
             ResetDuration();
-            UiElement = new CollectableTimer(_fuel, PowerUpData.Name, Color.magenta)
+            UiElement = new CollectableTimer(PowerUpData, Color.magenta)
             {
                 RemainingDuration = _fuel,
             };
             
             base.Start();
         }
-
         
         
         
@@ -58,7 +55,6 @@ namespace Behaviours.PowerUps
 
         
         
-
         private void FixedUpdate()
         {
             switch (_holding)
@@ -96,6 +92,5 @@ namespace Behaviours.PowerUps
         
         
         public override void ResetDuration() => _fuel = PowerUpData.Duration + PowerUpData.Duration * CollectableManager.GetUpgrade(PowerUpData).UpgradeLevel;
-
     }
 }

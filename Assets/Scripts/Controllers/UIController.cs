@@ -2,14 +2,13 @@ using Behaviours.PowerUps;
 using Enums;
 using JetBrains.Annotations;
 using Managers;
-using Model;
 using UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UIControllerOLD : MonoBehaviour
+public class UIController : MonoBehaviour
 {
-    public static UIControllerOLD Instance;
+    public static UIController Instance;
     
     private GameController _gameController;
     

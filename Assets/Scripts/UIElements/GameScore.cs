@@ -37,7 +37,7 @@ namespace UIElements
                level.enabled = false;
                break;
             
-            default:
+            case GameState.GameOver:
                StopAllCoroutines();
                SetInitialState();
                break;
@@ -69,7 +69,7 @@ namespace UIElements
 
       private async void OnLevelChanged(int newLevel)
       {
-         bool highScoreEnabled = highScore.enabled;
+         if (newLevel == 0) return;
          
          level.alpha = 0;
          level.text = $"Level {newLevel}";

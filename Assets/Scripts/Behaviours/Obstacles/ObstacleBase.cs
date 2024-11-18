@@ -10,12 +10,11 @@ namespace Behaviours.Obstacles
     public class ObstacleBase : MonoBehaviour
     {
         private const float SpecialCollectableProbability = 8;
+        private const float MoveSpeed = 2;
         
         [SerializeField] public int difficulty;
         [SerializeField] public float heightVariation;
-
-
-        protected float _moveSpeed = 2;
+        
         private float _startLocation;
         private Vector2 _movementDirection;
         
@@ -42,7 +41,7 @@ namespace Behaviours.Obstacles
             
             
             
-            var collectables = GameObject.FindGameObjectsWithTag("Collectable");
+            var collectables = GameObject.FindGameObjectsWithTag(Tags.Collectable);
             foreach (var currentObject in collectables)
             {
                 var collectableObject = Instantiate(collectable, currentObject.transform, true);
@@ -56,9 +55,9 @@ namespace Behaviours.Obstacles
         
         protected virtual void FixedUpdate()
         {
-            transform.Translate(_movementDirection * (_moveSpeed * Time.deltaTime));
+            transform.Translate(_movementDirection * (MoveSpeed * Time.deltaTime));
 
-            //Destroys obstacle when out of screen.
+            
             if (IsOutOfBounds())
             {
                 Destroy(gameObject);
@@ -69,7 +68,7 @@ namespace Behaviours.Obstacles
         
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.CompareTag("Player"))
+            if (other.CompareTag(Tags.Player))
             {
                 ScoreManager.CurrentScore += 1;
             }
@@ -101,13 +100,13 @@ namespace Behaviours.Obstacles
         
         
         private bool IsOutOfBounds()
-        {
-            return (_startLocation > 0 && transform.position.x < -_startLocation) || (_startLocation < 0 && transform.position.x > math.abs(_startLocation));
-        }
+            => (_startLocation > 0 && transform.position.x < -_startLocation) 
+               || (_startLocation < 0 && transform.position.x > math.abs(_startLocation));
         
         
         
-        protected virtual float GetRandomHeight()
+        
+        private float GetRandomHeight()
         {
             var randomValue = Random.Range(0, heightVariation);
             

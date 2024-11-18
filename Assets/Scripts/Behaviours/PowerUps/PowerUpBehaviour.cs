@@ -11,15 +11,18 @@ namespace Behaviours.PowerUps
         protected abstract VisualElement UiElement { get; set; }
 
         
+        
         public abstract void ResetDuration(); 
         
 
+        
         protected void Start() 
         {
             PlayerController.Instance.ConfigureComponents(PowerUpData.Name);
-            UIControllerOLD.Instance.AddModifierElement(UiElement);
+            UIController.Instance.AddModifierElement(UiElement);
         }
 
+        
         
         protected void RemovePowerUp()
         {

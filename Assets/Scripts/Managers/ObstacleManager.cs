@@ -23,8 +23,9 @@ namespace Managers
 
         public static ObstacleBase GetRandom()
           => _availableObstacles[Random.Range(0, _availableObstacles.Count-1)];
+
         
-        static void SetAvailableObstacles(int newLevel)
+        private static void SetAvailableObstacles(int newLevel)
             => _availableObstacles = _obstacles.FindAll(o => o.difficulty <= newLevel);
     }
 }
