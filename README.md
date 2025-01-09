@@ -50,8 +50,6 @@ For any other inquiries about licensing or asset usage, please contact lichtert.
 
 © 2024 Lichtert Yelle. All rights reserved.
 
-## 👋 Contact
 For more updates, follow the project on GitHub.
 
 ---
-Stay tuned for more updates as **Farty Corn** evolves into the craziest unicorn-powered game you've ever played!
